@@ -9,11 +9,11 @@
 
 ## Install Docker and Docker Compose
 
-- Follow this guide: (docker-installation.md)
+- [Follow this guide](https://github.com/alastria/alastria-node-besu/blob/master/docs/docker-installation.md)
 
 ## Clone Repo
 
-Clone repo and navigate to [regular compose directory](../compose/regular-node)
+Clone repo and navigate to *alastria-node-besu/compose/regular-node*
 
 ```sh
 git clone https://github.com/alastria/alastria-node-besu.git
@@ -26,7 +26,7 @@ cd alastria-node-besu/compose/regular-node
 
 #### New Besu Configuration
 
-Generate your besu node key and place it under [keys/besu](../compose/regular-node/keys/besu)
+Generate your besu node key and place it under *alastria-node-besu/compose/regular-node/keys/besu*
 
 ```sh
 docker container run -v `pwd`/keys/besu:/data -w /data -it --rm hyperledger/besu:1.4 --data-path=/data public-key export --to=/data/key.pub
@@ -61,6 +61,8 @@ To launch your node, run
 ```sh
 ./start.sh
 ```
+
+**The ports 30303 and 8545 need to be open to the Internet in the Docker host.**
 
 ## Stop Node
 
