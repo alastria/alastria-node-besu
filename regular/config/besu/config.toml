@@ -7,7 +7,7 @@ bootnodes=["enode://20c1378ff3b8ce6e53b914a413f00e2590ee85491af529f976aef8cff96a
 node-private-key-file="/data/alastria-node-besu/regular/keys/besu/key"
 
 # Comment this flag if you are using a lower version than 20.10.1
-compatibility-eth64-forkid-enabled=true
+# compatibility-eth64-forkid-enabled=true
 
 permissions-accounts-contract-address="0x0000000000000000000000000000000000008888"
 permissions-accounts-contract-enabled=false
@@ -18,7 +18,7 @@ permissions-nodes-contract-enabled=true
 genesis-file="/data/alastria-node-besu/regular/config/besu/genesis.json"
 min-gas-price=0
 
-rpc-http-api=["ETH","NET","WEB3"]
+rpc-http-api=["ETH","NET","WEB3","ADMIN"]
 rpc-http-enabled=true
 rpc-http-host="127.0.0.1"
 

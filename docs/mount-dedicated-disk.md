@@ -9,7 +9,7 @@ $ lsblk
 ```
 If it does not appear you should check if it was created correctly in your infrastructure provider.
 
-Format the disk, for example, in `ext4` and add the `alastria-b` label for the data disk.
+Format the disk, for example, in `ext4` filesystem, and add the `alastria-b` label for the data disk.
 
 ```sh
 $ sudo mkfs.ext4 -L alastria-b /dev/xvd__X__
@@ -21,7 +21,7 @@ Create the `/data` directory where the disk will be mounted.
 $ sudo mkdir /data
 ```
 
-Add this line at the end of `/etc/fstab` file so that the `alastria-b` disk is always mounted on restart in `/data` directory. The number `0` in the next column indicates that the filesystem does not use the dump utility (nobody uses _that_ nowadays!) and the number `2` in the last column indicates that the filesystem should be checked after the system partition 
+Add this line at the end of `/etc/fstab` file so that the `alastria-b` disk is always mounted on restart in `/data` directory. The number `0` in the next column indicates that the filesystem does not use the dump utility (nobody uses _that_ nowadays! :upside_down_face:) and the number `2` in the last column indicates that this filesystem should be checked after the system partition.
 
 ```sh
 $ sudo vi /etc/fstab 
@@ -30,13 +30,13 @@ $ sudo vi /etc/fstab
 LABEL=alastria-b        /data   ext4    defaults,discard        0 2
 ```
 
-We mount the disk in the designated path.
+Mount the disk in the designated path.
 
 ```sh
 $ sudo mount /data
 ```
 
-We see it has correctly been mounted.
+Test if the partition has been mounted correctly.
 
 ```sh
 $ df -h

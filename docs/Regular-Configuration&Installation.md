@@ -1,25 +1,40 @@
 # Regular Node Installation (with Binaries)
 
-First of all, install a Java interpreter on your system:
+## Besu Install
+
+* First of all, install a `Java` interpreter on your system:
 
 ```sh
 $ sudo add-apt-repository ppa:linuxuprising/java
 $ sudo apt update
-$ sudo apt-get install oracle-java15-installer
+$ sudo apt-get install oracle-java16-installer
 ```
 
-If not created, create a symbolic link to the binaries (_bin_) and the _lib_ directory of the Besu version you are interested in.
+* Let's clone the _repo_ from `red B` project to `/data` directory:
 
 ```sh
-$ cd regular
-$ sudo ln -s /data/alastria-node-besu/versionesBesu/besu-20.10.2/bin bin
-$ sudo ln -s /data/alastria-node-besu/versionesBesu/besu-20.10.2/lib lib
+$ sudo mkdir /data
 ```
-## Besu node configuration
 
-In the directory **config** are the files _config.toml_ and _genesis.json_.
+* In case you have chosen the right :pill:, be sure that you have mounted the [dedicated disk](docs/mount-dedicated-disk.md) in this folder:
 
-A new private key will be created and the public key and node address will be obtained. The following commands will be executed.
+```sh
+$ sudo mount /data
+$ cd /data
+$ sudo git clone https://github.com/alastria/alastria-node-besu.git
+```
+
+* Create a symbolic link to the binaries (_bin_) and the packages (_lib_) directory of the Besu version you are interested in.
+
+```sh
+$ cd /data/alastria-node-besu/regular/
+$ sudo ln -s /data/alastria-node-besu/versionesBesu/besu-1.4.3/bin bin
+$ sudo ln -s /data/alastria-node-besu/versionesBesu/besu-1.4.3/lib lib
+```
+
+## Besu Configuration
+
+In the directory **config** are the files _config.toml_ and _genesis.json_. A new private key will be created and the public key and node address will be obtained. The following commands will be executed.
 
 ```sh
 $ cd /data/alastria-node-besu/regular
@@ -107,14 +122,7 @@ lrwxrwxrwx 1 besu besu       29 Oct 21 11:00 lib -> /data/alastria-node-besu/ver
 └── lib -> /data/alastria-node-besu/versionBesu/besu-20.10.2/lib
 ```
 
-## Execution of the Demon of Besu
-
-**Note**: Due to a bug found, the network fails to synchronise all the blocks and stops at block 5484841. Therefore we recommend to follow the following steps (until the bug is solved):
-
-- Comment in config.toml file the flag *compatibility-eth64-forkid-enabled=true*
-- Modify the symbolic links and make them point to version 1.4.3.
-- Synchronise the whole network.
-- Stop the node (sudo systemctl stop besu.service), modify the symbolic link back to 20.10.2, uncomment the flag commented in the first step and start the node again (sudo systemctl start besu.service).
+## Execution Besu as Daemon
 
 In this section, a daemon will be created to execute the Besu node in case of VM crashes, unexpected restarts, etc.
 
@@ -215,14 +223,38 @@ drwxr-xr-x 9 besu besu     4096 Oct 21 14:01 ../
 -rw-r--r-- 1 besu besu       13 Oct 22 13:45 DATABASE_METADATA.json
 -rw-r--r-- 1 besu besu      219 Oct 23 10:09 besu.networks
 -rw-r--r-- 1 besu besu      205 Oct 23 10:09 besu.ports
-lrwxrwxrwx 1 besu besu       29 Oct 21 10:49 bin -> /data/alastria-node-besu/versionBesu/besu-20.10.2/bin/
+lrwxrwxrwx 1 besu besu       29 Oct 21 10:49 bin -> /data/alastria-node-besu/versionBesu/besu-1.4.3/bin/
 drwxr-xr-x 2 besu besu     4096 Oct 22 13:45 caches/
 drwxrwxr-x 3 besu besu     4096 Oct 21 10:38 config/
 drwxr-xr-x 2 besu besu     4096 Oct 23 10:09 database/
 drwxr-xr-x 3 besu besu     4096 Oct 21 10:38 keys/
-lrwxrwxrwx 1 besu besu       29 Oct 21 11:00 lib -> /data/alastria-node-besu/versionBesu/besu-20.10.2/lib/
+lrwxrwxrwx 1 besu besu       29 Oct 21 11:00 lib -> /data/alastria-node-besu/versionBesu/besu-1.4.3/lib/
 drwxrwxr-x 2 besu besu     4096 Oct 28 16:59 logs/
 drwxrwxr-x 2 besu besu     4096 Oct 21 14:54 uploads/
 ```
 
-<!-- ## How to deploy your Smart Contracts -->
+## Permission the new enode
+
+Please, send the following information in order to get the permission for joining the network:
+
+* Get your public IP, for example, with `curl ifconfig.me`. Remember that the hosting should be in _Eurozone_.
+* Get your hosting provider, in case you use one. Otherwise, use `SelfHosting`.
+* Keep in mind your system configuration: number of cores, memory and harddisk reserved for the node.
+* Enode direcction. You can find it in `/data/alastria-node-besu/regular/keys/besu/nodeAddress` file, or using `curl -X POST --data '{"jsonrpc":"2.0","method":"admin_nodeInfo","params":[],"id":1}' http://127.0.0.1:8545`.
+
+## Upgrading version
+
+**After first synchronization has finished**, you **should** update your node to latest version:
+
+- Stop the node, `sudo systemctl stop besu.service`
+- Uncomment in `/data/alastria-node-besu/regular/config/besu/config.toml` file the flag `compatibility-eth64-forkid-enabled=true`
+- Modify the symbolic links and make them point to Besu 20.10.2.
+
+```sh
+$ cd /data/alastria-node-besu/regular
+$ rm bin
+$ sudo ln -s /data/alastria-node-besu/versionesBesu/besu-20.10.2/bin bin
+$ rm lib
+$ sudo ln -s /data/alastria-node-besu/versionesBesu/besu-20.10.2/lib lib
+```
+- start the node again, `sudo systemctl start besu.service`.

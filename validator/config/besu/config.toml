@@ -19,7 +19,7 @@ permissions-nodes-contract-enabled=true
 genesis-file="/data/alastria-node-besu/validator/config/besu/genesis.json"
 min-gas-price=0
 
-rpc-http-api=["ETH","NET","IBFT","WEB3","ADMIN"]
+rpc-http-api=["ETH","NET","WEB3","ADMIN","IBFT"]
 rpc-http-enabled=true
 rpc-http-host="0.0.0.0"
 host-whitelist=["*"]
