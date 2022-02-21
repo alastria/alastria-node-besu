@@ -1,0 +1,32 @@
+# Alastria B network
+
+# Global configuration
+bootnodes=[
+"enode://156c78217b32d5042a404a115ae726cccceaeef931144a41844f3b53389818eeda005f5ca5be5cad1b3eed8c40f12469365f488df5e7cdce1f750a5d4da84a8e@185.180.8.164:30303",
+"enode://e4e807fa72a8c9a137ca89e12fa95673c68b85a02d22627b0a8d8c6cc0709aa0efcb3be62c6a62ac7e5884c6d7909191990705038f833098cf8b0509faa88151@54.220.2.15:30303",
+"enode://51f5079420860f79f49645f63396b8c797882b5a0f29cd56075aecf131ef1b6a6128941a8c9e787f178cffb2ea60fbd5aa7fe884fa39e7892fcd4d0150eb1aab@54.155.199.65:30303",
+"enode://20c1378ff3b8ce6e53b914a413f00e2590ee85491af529f976aef8cff96a649afff14262dee0273ed7a11ca2adc8a6f7918c0a42303a2e13cbea8a89961425ad@54.216.131.145:30303"
+]
+
+logging="INFO"
+
+discovery-enabled=false
+
+permissions-accounts-contract-address="0x0000000000000000000000000000000000008888"
+permissions-accounts-contract-enabled=false
+permissions-nodes-contract-address="0x0000000000000000000000000000000000009999"
+permissions-nodes-contract-enabled=false
+
+# Local configuration
+data-path="/data"
+node-private-key-file="/data/key"
+genesis-file="/data/genesis.json"
+min-gas-price=0
+
+rpc-http-enabled=true
+rpc-http-host="127.0.0.1"
+rpc-http-api=["ETH","NET","WEB3","ADMIN"]
+
+metrics-enabled=true
+metrics-host="0.0.0.0"
+metrics-port="9545"
