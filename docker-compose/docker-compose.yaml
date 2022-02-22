@@ -1,0 +1,31 @@
+# Compose file for a Alastria-B node
+
+version: "3.7"
+
+services:
+    alastria-node:
+        build:
+            context: ./alastria-node
+            args:
+                - NODE_NAME=${NODE_NAME}
+                - VERSION_BESU=22.1.0
+        container_name: ${NODE_NAME}
+        volumes:
+            - /data/alastria-node-besu/database:/data/alastria-node-besu/database
+            - keys:/data/alastria-node-besu/keys
+        ports:
+            - "30303:30303/tcp"
+            - "30303:30303/udp"
+            - "9545:9545/tcp"
+            # Orion port (in case you use private transactions)
+            # - "8080:8080/tcp"
+            #
+            # json+rpc (in case you use remix/truffle/.../web3)
+            # - "8545:8545/tcp"
+            #
+            # json+ws (in case you use remix/truffle/.../web3)
+            # - "8546:8546/tcp"
+        command: /data/alastria-node-besu/bin/besu --config-file=/data/alastria-node-besu/config/config.toml
+            
+volumes:
+    keys:
