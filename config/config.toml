@@ -18,9 +18,10 @@ permissions-nodes-contract-address="0x0000000000000000000000000000000000009999"
 permissions-nodes-contract-enabled=false
 
 # Local configuration
-data-path="/data"
-node-private-key-file="/data/key"
-genesis-file="/data/genesis.json"
+data-path="/data/alastria-node-besu"
+node-private-key-file="/data/alastria-node-besu/keys/key"
+genesis-file="/data/alastria-node-besu/config/genesis.json"
+static-nodes-file="/data/alastria-node-besu/config/static-nodes.json"
 min-gas-price=0
 
 rpc-http-enabled=true
