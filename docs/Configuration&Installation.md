@@ -28,8 +28,7 @@ $ sudo git clone https://github.com/alastria/alastria-node-besu.git
 
 ```sh
 $ cd /data/alastria-node-besu/
-$ wget https://hyperledger.jfrog.io/artifactory/besu-binaries/besu/22.1.0/besu-22.1.0.tar.gz
-$ tar -xf besu-22.1.0.tar.gz
+$ wget https://hyperledger.jfrog.io/artifactory/besu-binaries/besu/$VERSION_BESU/besu-22.1.0.tar.gz -O - | tar -xz
 ```
 
 * Create a symbolic link to the binaries (_bin_) and the packages (_lib_) directory of the Besu version you are interested in.
@@ -71,7 +70,7 @@ In order to control the Node logs, Besu allows you to [configure your logs](http
     <Console name="Console" target="SYSTEM_OUT">
         <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSSZZZ} | %t | %-5level | %c{1} | %msg %throwable{short.message}%n" />
     </Console>
-    <RollingFile name="RollingFile" fileName="/data/alastria-node-besu/regular/besu/logs/besu.log" filePattern="/data/alastria-node-besu/regular/besu/logs/besu-%d{yyyyMMdd}-%i.log.gz" >
+    <RollingFile name="RollingFile" fileName="/data/alastria-node-besu/logs/besu.log" filePattern="/data/alastria-node-besu/logs/besu-%d{yyyyMMdd}-%i.log.gz" >
         <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSSZZZ} | %t | %-5level | %c{1} | %msg %throwable{short.message}%n" />
         <!-- Logs in JSON format
         <PatternLayout alwaysWriteExceptions="false" pattern='{"timestamp":"%d{ISO8601}","container":"${hostName}","level":"%level","thread":"%t","class":"%c{1}","message":"%msg","throwable":"%enc{%throwable}{JSON}"}%n'/>
@@ -109,17 +108,19 @@ The folder structure will be as follows.
 ```sh
 drwxrwxr-x 7 besu besu     4096 Oct 23 10:09 ./
 drwxr-xr-x 9 besu besu     4096 Oct 21 14:01 ../
+drwxr-xr-x 1 besu besu      112 Oct 21 10:29 besu-22.1.0
 lrwxrwxrwx 1 besu besu       29 Oct 21 10:49 bin -> /data/alastria-node-besu/besu-22.1.0/bin/
 drwxrwxr-x 3 besu besu     4096 Oct 21 10:38 config/
 drwxr-xr-x 3 besu besu     4096 Oct 21 10:38 keys/
 lrwxrwxrwx 1 besu besu       29 Oct 21 11:00 lib -> /data/alastria-node-besu/besu-22.1.0/lib/
 
 .
+├── besu-22.1.0
 ├── bin -> /data/alastria-node-besu/besu-22.1.0/bin
 ├── config
 │   ├── config.toml
-|   ├── genesis.json
-|   ├── static-nodes.json
+│   ├── genesis.json
+│   ├── static-nodes.json
 │   └── log-config.xml
 ├── keys
 │   ├── key
@@ -229,6 +230,7 @@ drwxr-xr-x 9 besu besu     4096 Oct 21 14:01 ../
 -rw-r--r-- 1 besu besu       13 Oct 22 13:45 DATABASE_METADATA.json
 -rw-r--r-- 1 besu besu      219 Oct 23 10:09 besu.networks
 -rw-r--r-- 1 besu besu      205 Oct 23 10:09 besu.ports
+drwxr-xr-x 1 besu besu      112 Oct 21 10:29 besu-22.1.0
 lrwxrwxrwx 1 besu besu       29 Oct 21 10:49 bin -> /data/alastria-node-besu/besu-22.1.0/bin/
 drwxr-xr-x 2 besu besu     4096 Oct 22 13:45 caches/
 drwxrwxr-x 3 besu besu     4096 Oct 21 10:38 config/
