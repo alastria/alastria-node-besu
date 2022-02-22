@@ -168,9 +168,8 @@ It's in your hands! [Alastria](https://alastria.io/en/) is an open group and eve
 
 ## Links
 
-- [Red B Core Netstats](http://netstats.core-redb.alastria.io)
-- [Red B Network Monitor](https://alastria-netstats2.planisys.net:8443/?orgId=1)
-- [Red B Block Explorer - Hosted by Banco Santander](http://redbexplorer.westeurope.cloudapp.azure.com/dashboard · [Epirus](https://github.com/web3labs/epirus-free) based explorer
+- [Red B Core Netstats](http://netstats.core-redb.alastria.io) - Hosted by Alastria
+- [Red B Network Monitor](https://alastria-netstats2.planisys.net:8443/?orgId=1) - Hosted by Planisys
 
 ## Other Guides
 
@@ -178,6 +177,5 @@ Internal documentation for `red B` core admins:
 
 - [Red B Initial Schema](docs/AlastriaRedB.png)
 - [Alethio Lite Explorer Installation Guide](docs/blockexplorer-installation.md)
-- [Permissioning DApp](docs/permissioning-dapp.md)
 - [Genesys file Description](docs/about-genesis-file.md)
 - [Postman Coleccion for RCP Calls](https://besu.hyperledger.org/postman/postman_collection.json)
