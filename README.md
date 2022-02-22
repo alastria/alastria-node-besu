@@ -76,13 +76,18 @@ Notes:
 
 ## Installation
 
+### Node Types
+- Users who want deploy applications should use [Regular node Installation Guide](docs/Regular-Configuration&Installation.md)
+- Users who want to improve the availability of the network should add a `Core Node`. Keep in mind the dedicated use of these nodes and the special security considerations for these core nodes. Please, open a Issue to be evaluated by Core Team.
+
+### Option 1 - baremetal
+
 The following guide is ready for installation on a dedicated machine (bare metal, virtual machine,...), with data files stored on `/data` partition.
 **Please**, consider the following guide to add a [dedicated disk](docs/mount-dedicated-disk.md) for the node database, independent of the system disk.
 
-### Installation Type
+### Option 2 - docker-compose
 
-- Users who want deploy applications should use [Regular node Installation Guide](docs/Regular-Configuration&Installation.md)
-- Users who want to improve the availability of the network should add [Validator](docs/Validator-Configuration&Installation.md) or [Regular](docs/Validator-Configuration&Installation.md) node. Keep in mind the dedicated use of these nodes and the special security considerations for these core nodes.
+[WIP](docs/docker-compose.md)
 
 ## Help! :fire_extinguisher:
 
