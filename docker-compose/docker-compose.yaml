@@ -12,6 +12,7 @@ services:
         container_name: ${NODE_NAME}
         volumes:
             - /data/alastria-node-besu/database:/data/alastria-node-besu/database
+            - /data/alastria-node-besu/logs:/data/alastria-node-besu/logs
             - keys:/data/alastria-node-besu/keys
         ports:
             - "30303:30303/tcp"
