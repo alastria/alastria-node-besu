@@ -24,30 +24,36 @@ $ cd /data
 $ sudo git clone https://github.com/alastria/alastria-node-besu.git
 ```
 
+* Download Besu binaries
+
+```sh
+$ cd /data/alastria-node-besu/
+$ wget https://hyperledger.jfrog.io/artifactory/besu-binaries/besu/$VERSION_BESU/besu-22.1.0.tar.gz -O - | tar -xz
+```
+
 * Create a symbolic link to the binaries (_bin_) and the packages (_lib_) directory of the Besu version you are interested in.
 
 ```sh
-$ cd /data/alastria-node-besu/regular/
-$ sudo ln -s /data/alastria-node-besu/versionesBesu/besu-1.4.3/bin bin
-$ sudo ln -s /data/alastria-node-besu/versionesBesu/besu-1.4.3/lib lib
+$ sudo ln -s /data/alastria-node-besu/besu-22.1.0/bin bin
+$ sudo ln -s /data/alastria-node-besu/besu-22.1.0/lib lib
 ```
 
 ## Besu Configuration
 
-In the directory **config** are the files _config.toml_ and _genesis.json_. A new private key will be created and the public key and node address will be obtained. The following commands will be executed.
+In the directory **config** are the files _config.toml_, _genesis.json_ and _static-node.toml_. A new private key will be created and the public key and node address will be obtained. The following commands will be executed.
 
 ```sh
-$ cd /data/alastria-node-besu/regular
 $ bin/besu --data-path=. public-key export --to=key.pub
 $ bin/besu --data-path=. public-key export-address --to=nodeAddress
 ```
 
-Here the keys 'key', 'key.pub' and 'nodeAddress' will have been generated and there gonna be stored in the **keys/besu** directory.
+Here the keys 'key', 'key.pub' and 'nodeAddress' will have been generated and there gonna be stored in the **keys** directory.
 
 ```sh
-$ mv key keys/besu
-$ mv key.pub keys/besu
-$ mv nodeAddress keys/besu
+$ mkdir keys
+$ mv key keys
+$ mv key.pub keys
+$ mv nodeAddress keys
 ```
 
 In order to control the Node logs, Besu allows you to [configure your logs](https://besu.hyperledger.org/en/1.3.0-rc1/HowTo/Troubleshoot/Logging/) thanks to [log4j2](https://logging.apache.org/log4j/2.x/manual/configuration.html), being able to change the format in which you take them out, if you make rotations, if you compress the new files, how many you save and where you save them, etc. To do this, a file called **log-config.xml** is stored in _config/besu_.
@@ -64,7 +70,7 @@ In order to control the Node logs, Besu allows you to [configure your logs](http
     <Console name="Console" target="SYSTEM_OUT">
         <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSSZZZ} | %t | %-5level | %c{1} | %msg %throwable{short.message}%n" />
     </Console>
-    <RollingFile name="RollingFile" fileName="/data/alastria-node-besu/regular/besu/logs/besu.log" filePattern="/data/alastria-node-besu/regular/besu/logs/besu-%d{yyyyMMdd}-%i.log.gz" >
+    <RollingFile name="RollingFile" fileName="/data/alastria-node-besu/logs/besu.log" filePattern="/data/alastria-node-besu/logs/besu-%d{yyyyMMdd}-%i.log.gz" >
         <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSSZZZ} | %t | %-5level | %c{1} | %msg %throwable{short.message}%n" />
         <!-- Logs in JSON format
         <PatternLayout alwaysWriteExceptions="false" pattern='{"timestamp":"%d{ISO8601}","container":"${hostName}","level":"%level","thread":"%t","class":"%c{1}","message":"%msg","throwable":"%enc{%throwable}{JSON}"}%n'/>
@@ -102,24 +108,25 @@ The folder structure will be as follows.
 ```sh
 drwxrwxr-x 7 besu besu     4096 Oct 23 10:09 ./
 drwxr-xr-x 9 besu besu     4096 Oct 21 14:01 ../
-lrwxrwxrwx 1 besu besu       29 Oct 21 10:49 bin -> /data/alastria-node-besu/versionBesu/besu-20.10.2/bin/
+drwxr-xr-x 1 besu besu      112 Oct 21 10:29 besu-22.1.0
+lrwxrwxrwx 1 besu besu       29 Oct 21 10:49 bin -> /data/alastria-node-besu/besu-22.1.0/bin/
 drwxrwxr-x 3 besu besu     4096 Oct 21 10:38 config/
 drwxr-xr-x 3 besu besu     4096 Oct 21 10:38 keys/
-lrwxrwxrwx 1 besu besu       29 Oct 21 11:00 lib -> /data/alastria-node-besu/versionBesu/besu-20.10.2/lib/
+lrwxrwxrwx 1 besu besu       29 Oct 21 11:00 lib -> /data/alastria-node-besu/besu-22.1.0/lib/
 
 .
-├── bin -> /data/alastria-node-besu/versionBesu/besu-20.10.2/bin
+├── besu-22.1.0
+├── bin -> /data/alastria-node-besu/besu-22.1.0/bin
 ├── config
-│   └── besu
-│       ├── config.toml
-|       ├── genesis.json
-│       └── log-config.xml
+│   ├── config.toml
+│   ├── genesis.json
+│   ├── static-nodes.json
+│   └── log-config.xml
 ├── keys
-│   └── besu
-│       ├── key
-│       ├── key.pub
-│       └── nodeAddress
-└── lib -> /data/alastria-node-besu/versionBesu/besu-20.10.2/lib
+│   ├── key
+│   ├── key.pub
+│   └── nodeAddress
+└── lib -> /data/alastria-node-besu/besu-22.1.0/lib
 ```
 
 ## Execution Besu as Daemon
@@ -143,11 +150,11 @@ After=network.target
 [Service]
 StartLimitBurst=5
 StartLimitIntervalSec=200
-WorkingDirectory=/data/alastria-node-besu/regular/
-Environment=LOG4J_CONFIGURATION_FILE=/data/alastria-node-besu/regular/config/besu/log-config.xml
+WorkingDirectory=/data/alastria-node-besu/
+Environment=LOG4J_CONFIGURATION_FILE=/data/alastria-node-besu/config/log-config.xml
 Type=simple
 User=besu
-ExecStart=/data/alastria-node-besu/regular/bin/besu --config-file="/data/alastria-node-besu/regular/config/besu/config.toml"
+ExecStart=/data/alastria-node-besu/bin/besu --config-file="/data/alastria-node-besu/config/config.toml"
 Restart=always
 RestartSec=30
 
@@ -185,7 +192,7 @@ Getting the following result.
  Main PID: 19089 (java)
     Tasks: 73 (limit: 4680)
    CGroup: /system.slice/besu.service
-           └─19089 java -Dvertx.disableFileCPResolving=true -Dbesu.home=/data/alastria-node-besu/regular -Dlog4j.shutdownHookEnabled=false --add-
+           └─19089 java -Dvertx.disableFileCPResolving=true -Dbesu.home=/data/alastria-node-besu -Dlog4j.shutdownHookEnabled=false --add-
 
 Oct 28 17:36:35 besu1 besu[19089]: 2020-10-28 17:36:35.023+00:00 | pool-8-thread-1 | INFO  | IbftRound | Importing block to
 Oct 28 17:36:37 besu1 besu[19089]: 2020-10-28 17:36:37.022+00:00 | pool-8-thread-1 | INFO  | IbftRound | Importing block to
@@ -223,12 +230,13 @@ drwxr-xr-x 9 besu besu     4096 Oct 21 14:01 ../
 -rw-r--r-- 1 besu besu       13 Oct 22 13:45 DATABASE_METADATA.json
 -rw-r--r-- 1 besu besu      219 Oct 23 10:09 besu.networks
 -rw-r--r-- 1 besu besu      205 Oct 23 10:09 besu.ports
-lrwxrwxrwx 1 besu besu       29 Oct 21 10:49 bin -> /data/alastria-node-besu/versionBesu/besu-1.4.3/bin/
+drwxr-xr-x 1 besu besu      112 Oct 21 10:29 besu-22.1.0
+lrwxrwxrwx 1 besu besu       29 Oct 21 10:49 bin -> /data/alastria-node-besu/besu-22.1.0/bin/
 drwxr-xr-x 2 besu besu     4096 Oct 22 13:45 caches/
 drwxrwxr-x 3 besu besu     4096 Oct 21 10:38 config/
 drwxr-xr-x 2 besu besu     4096 Oct 23 10:09 database/
 drwxr-xr-x 3 besu besu     4096 Oct 21 10:38 keys/
-lrwxrwxrwx 1 besu besu       29 Oct 21 11:00 lib -> /data/alastria-node-besu/versionBesu/besu-1.4.3/lib/
+lrwxrwxrwx 1 besu besu       29 Oct 21 11:00 lib -> /data/alastria-node-besu/besu-22.1.0/lib/
 drwxrwxr-x 2 besu besu     4096 Oct 28 16:59 logs/
 drwxrwxr-x 2 besu besu     4096 Oct 21 14:54 uploads/
 ```
@@ -240,21 +248,4 @@ Please, send the following information in order to get the permission for joinin
 * Get your public IP, for example, with `curl ifconfig.me`. Remember that the hosting should be in _Eurozone_.
 * Get your hosting provider, in case you use one. Otherwise, use `SelfHosting`.
 * Keep in mind your system configuration: number of cores, memory and harddisk reserved for the node.
-* Enode direcction. You can find it in `/data/alastria-node-besu/regular/keys/besu/nodeAddress` file, or using `curl -X POST --data '{"jsonrpc":"2.0","method":"admin_nodeInfo","params":[],"id":1}' http://127.0.0.1:8545`.
-
-## Upgrading version
-
-**After first synchronization has finished**, you **should** update your node to latest version:
-
-- Stop the node, `sudo systemctl stop besu.service`
-- Uncomment in `/data/alastria-node-besu/regular/config/besu/config.toml` file the flag `compatibility-eth64-forkid-enabled=true`
-- Modify the symbolic links and make them point to Besu 20.10.2.
-
-```sh
-$ cd /data/alastria-node-besu/regular
-$ rm bin
-$ sudo ln -s /data/alastria-node-besu/versionesBesu/besu-20.10.2/bin bin
-$ rm lib
-$ sudo ln -s /data/alastria-node-besu/versionesBesu/besu-20.10.2/lib lib
-```
-- start the node again, `sudo systemctl start besu.service`.
+* Enode direcction. You can find it in `/data/alastria-node-besu/keys/nodeAddress` file, or using `curl -X POST --data '{"jsonrpc":"2.0","method":"admin_nodeInfo","params":[],"id":1}' http://127.0.0.1:8545`.
