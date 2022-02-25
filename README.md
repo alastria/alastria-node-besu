@@ -87,7 +87,16 @@ The following guide is ready for installation on a dedicated machine (bare metal
 
 ### Option 2 - docker-compose
 
-[WIP](docs/docker-compose.md)
+Read the following guide to make a [Regular Node Installation with Docker](docs/Configuration%26Installation-with-docker.md)
+
+## Permissioning new node
+
+Please, send the following information in order to get the permission for joining the network:
+
+* Get your public IP, for example, with `curl ifconfig.me`. Remember that the hosting should be in _Eurozone_.
+* Get your hosting provider, in case you use one. Otherwise, use `SelfHosting`.
+* Keep in mind your system configuration: number of cores, memory and harddisk reserved for the node.
+* Enode direction. You can find it in `/data/alastria-node-besu/keys/nodeAddress` file, or using `curl -X POST --data '{"jsonrpc":"2.0","method":"admin_nodeInfo","params":[],"id":1}' http://127.0.0.1:8545`.
 
 ## Help! :fire_extinguisher:
 
