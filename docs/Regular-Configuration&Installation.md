@@ -240,12 +240,3 @@ lrwxrwxrwx 1 besu besu       29 Oct 21 11:00 lib -> /data/alastria-node-besu/bes
 drwxrwxr-x 2 besu besu     4096 Oct 28 16:59 logs/
 drwxrwxr-x 2 besu besu     4096 Oct 21 14:54 uploads/
 ```
-
-## Permission the new enode
-
-Please, send the following information in order to get the permission for joining the network:
-
-* Get your public IP, for example, with `curl ifconfig.me`. Remember that the hosting should be in _Eurozone_.
-* Get your hosting provider, in case you use one. Otherwise, use `SelfHosting`.
-* Keep in mind your system configuration: number of cores, memory and harddisk reserved for the node.
-* Enode direcction. You can find it in `/data/alastria-node-besu/keys/nodeAddress` file, or using `curl -X POST --data '{"jsonrpc":"2.0","method":"admin_nodeInfo","params":[],"id":1}' http://127.0.0.1:8545`.
