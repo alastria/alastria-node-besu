@@ -71,7 +71,7 @@ Notes:
 Notes:
 
 - :warning: Please, be very carefull opening web3 ports: this protocol does not have enabled (natively) neither authentication nor encryption!
-- :warning: Opening web3 ports, can be tuned in `/data/alastria-node-besu/regular/config/besu/config.toml` file: listening interface, `web3` methods available,...
+- :warning: Opening web3 ports, can be tuned in `/data/alastria-node-besu/config/config.toml` file: listening interface, `web3` methods available,...
 - Ninja sysadmins don't use outbound firewall rules :joy:
 
 ## Installation
@@ -133,7 +133,7 @@ If you want to do a Pull Request on the [alastria-node-besu](https://github.com/
 - How to launch an interactive console for debugging purposes?
 
 ```sh
-$ sudo /data/alastria-node-besu/regular/bin/besu --config-file="/data/alastria-node-besu/regular/config/besu/config.toml"
+$ sudo /data/alastria-node-besu/bin/besu --config-file="/data/alastria-node-besu/config/config.toml"
 ```
 
 - How to know if the node is already permissioned?
@@ -157,7 +157,7 @@ $ curl -X POST --data '{"jsonrpc":"2.0","method":"eth_syncing","params":[],"id":
 Enable this object at the node: add "ADMIN" to the list of supported methods:
 
 ```sh
-$ sudo vim /data/alastria-node-besu/regular/config/besu/config.toml
+$ sudo vim /data/alastria-node-besu/config/config.toml
 
 [...]
 rpc-http-api=["ADMIN", "ETH","NET","WEB3"]
