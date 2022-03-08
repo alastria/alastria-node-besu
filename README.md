@@ -184,4 +184,5 @@ It's in your hands! [Alastria](https://alastria.io/en/) is an open group and eve
 ## Links
 
 - [Red B Core Netstats](http://netstats.core-redb.alastria.io) - Hosted by Alastria
+- [Red B Epirus Network Explorer](https://redb.trustos.telefonica.com/) - Hosted by Telefónica
 - [Red B Network Monitor](https://alastria-netstats2.planisys.net:8443/?orgId=1) - Hosted by Planisys

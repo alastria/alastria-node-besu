@@ -12,6 +12,7 @@ services:
         container_name: ${NODE_NAME}
         volumes:
             - /data/alastria-node-besu/database:/data/alastria-node-besu/database
+            - /data/alastria-node-besu/logs:/data/alastria-node-besu/logs
             - keys:/data/alastria-node-besu/keys
         ports:
             - "30303:30303/tcp"
@@ -26,6 +27,8 @@ services:
             # json+ws (in case you use remix/truffle/.../web3)
             # - "8546:8546/tcp"
         command: /data/alastria-node-besu/bin/besu --config-file=/data/alastria-node-besu/config/config.toml
+        environment:
+            - LOG4J_CONFIGURATION_FILE=/data/alastria-node-besu/config/log-config.xml
             
 volumes:
     keys:

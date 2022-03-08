@@ -6,7 +6,7 @@ ARG VERSION_BESU
 RUN apk add --no-cache git tar
 
 WORKDIR /data
-RUN git clone --branch redB-restart https://github.com/alastria/alastria-node-besu
+RUN git clone https://github.com/alastria/alastria-node-besu
 
 WORKDIR /data/alastria-node-besu
 
