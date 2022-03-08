@@ -71,18 +71,33 @@ Notes:
 Notes:
 
 - :warning: Please, be very carefull opening web3 ports: this protocol does not have enabled (natively) neither authentication nor encryption!
-- :warning: Opening web3 ports, can be tuned in `/data/alastria-node-besu/regular/config/besu/config.toml` file: listening interface, `web3` methods available,...
+- :warning: Opening web3 ports, can be tuned in `/data/alastria-node-besu/config/config.toml` file: listening interface, `web3` methods available,...
 - Ninja sysadmins don't use outbound firewall rules :joy:
 
 ## Installation
 
+### Node Types
+- Users who want deploy applications should use [Regular node Installation Guide](docs/Regular-Configuration&Installation.md)
+- Users who want to improve the availability of the network should add a `Core Node`. Keep in mind the dedicated use of these nodes and the special security considerations for these core nodes. Please, open a Issue to be evaluated by Core Team.
+
+### Option 1 - baremetal
+
 The following guide is ready for installation on a dedicated machine (bare metal, virtual machine,...), with data files stored on `/data` partition.
 **Please**, consider the following guide to add a [dedicated disk](docs/mount-dedicated-disk.md) for the node database, independent of the system disk.
 
-### Installation Type
+### Option 2 - docker-compose
 
-- Users who want deploy applications should use [Regular node Installation Guide](docs/Regular-Configuration&Installation.md)
-- Users who want to improve the availability of the network should add [Validator](docs/Validator-Configuration&Installation.md) or [Regular](docs/Validator-Configuration&Installation.md) node. Keep in mind the dedicated use of these nodes and the special security considerations for these core nodes.
+Read the following guide to make a [Regular Node Installation with Docker](docs/Configuration%26Installation-with-docker.md)
+
+## Permissioning new node
+
+Please, open an issue in this repository and provide the following information in order to get the permission for joining the network:
+
+* The exact Node Name provided in this [electronic form](https://portal.r2docuo.com/alastria/forms/noderequest).
+* The public IP for your node. Get your public IP, for example, with `curl ifconfig.me`. Remember that the hosting should be in _Eurozone_.
+* The hosting provider for your node, in case you use one. Otherwise, use `SelfHosting`.
+* The system configuration: number of cores, memory and harddisk reserved for the node.
+* Enode direction. You can find it in `/data/alastria-node-besu/keys/nodeAddress` file, or using `curl -X POST --data '{"jsonrpc":"2.0","method":"admin_nodeInfo","params":[],"id":1}' http://127.0.0.1:8545`.
 
 ## Help! :fire_extinguisher:
 
@@ -118,7 +133,7 @@ If you want to do a Pull Request on the [alastria-node-besu](https://github.com/
 - How to launch an interactive console for debugging purposes?
 
 ```sh
-$ sudo /data/alastria-node-besu/regular/bin/besu --config-file="/data/alastria-node-besu/regular/config/besu/config.toml"
+$ sudo /data/alastria-node-besu/bin/besu --config-file="/data/alastria-node-besu/config/config.toml"
 ```
 
 - How to know if the node is already permissioned?
@@ -142,7 +157,7 @@ $ curl -X POST --data '{"jsonrpc":"2.0","method":"eth_syncing","params":[],"id":
 Enable this object at the node: add "ADMIN" to the list of supported methods:
 
 ```sh
-$ sudo vim /data/alastria-node-besu/regular/config/besu/config.toml
+$ sudo vim /data/alastria-node-besu/config/config.toml
 
 [...]
 rpc-http-api=["ADMIN", "ETH","NET","WEB3"]
@@ -170,13 +185,4 @@ It's in your hands! [Alastria](https://alastria.io/en/) is an open group and eve
 
 - [Red B Core Netstats](http://netstats.core-redb.alastria.io) - Hosted by Alastria
 - [Red B Epirus Network Explorer](https://redb.trustos.telefonica.com/) - Hosted by Telefónica
-- [Red B Regular Nodes Monitor *WIP*](https://alastria-netstats2.planisys.net:8443/?orgId=1) - Hosted by Planisys
-
-## Other Guides
-
-Internal documentation for `red B` core admins:
-
-- [Red B Initial Schema](docs/AlastriaRedB.png)
-- [Alethio Lite Explorer Installation Guide](docs/blockexplorer-installation.md)
-- [Genesys file Description](docs/about-genesis-file.md)
-- [Postman Coleccion for RCP Calls](https://besu.hyperledger.org/postman/postman_collection.json)
+- [Red B Network Monitor](https://alastria-netstats2.planisys.net:8443/?orgId=1) - Hosted by Planisys
