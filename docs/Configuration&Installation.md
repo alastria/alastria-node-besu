@@ -28,7 +28,7 @@ $ sudo git clone https://github.com/alastria/alastria-node-besu.git
 
 ```sh
 $ cd /data/alastria-node-besu/
-$ wget https://hyperledger.jfrog.io/artifactory/besu-binaries/besu/$VERSION_BESU/besu-22.1.0.tar.gz -O - | tar -xz
+$ wget https://hyperledger.jfrog.io/artifactory/besu-binaries/besu/22.1.0/besu-22.1.0.tar.gz -O - | tar -xz
 ```
 
 * Create a symbolic link to the binaries (_bin_) and the packages (_lib_) directory of the Besu version you are interested in.
