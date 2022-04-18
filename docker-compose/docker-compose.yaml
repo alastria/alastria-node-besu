@@ -7,8 +7,8 @@ services:
         build:
             context: ./alastria-node
             args:
-                - NODE_NAME=${NODE_NAME}
-                - VERSION_BESU=22.1.0
+                - NODE_TYPE=${NODE_TYPE}
+                - NODE_BRANCH=${NODE_BRANCH}
         container_name: ${NODE_NAME}
         volumes:
             - /data/alastria-node-besu/database:/data/alastria-node-besu/database
