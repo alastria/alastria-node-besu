@@ -1,12 +1,10 @@
 FROM adoptopenjdk/openjdk11:alpine-jre
 
-ARG NODE_NAME
-ARG VERSION_BESU
+ARG NODE_TYPE
+ARG NODE_BRANCH
+ENV VERSION_BESU="22.1.0"
 
-RUN apk add --no-cache git tar
-
-WORKDIR /data
-RUN git clone https://github.com/alastria/alastria-node-besu
+RUN apk add --no-cache tar jq
 
 WORKDIR /data/alastria-node-besu
 
@@ -19,3 +17,6 @@ RUN bin/besu --data-path=. public-key export --to=key.pub && \
     bin/besu --data-path=. public-key export-address --to=nodeAddress && \
     mkdir -p keys && \
     mv key key.pub nodeAddress keys/
+    
+COPY configure.node.sh ./
+RUN chmod +x ./configure.node.sh && ./configure.node.sh
