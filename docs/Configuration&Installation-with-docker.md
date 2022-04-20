@@ -18,9 +18,11 @@ $ sudo git clone https://github.com/alastria/alastria-node-besu.git
 
 Where _\<COMPANY\>_ is your company/entity name, _\<Y\>_ is the number of processors of the machine, _\<Z\>_ is the amount of memory in Gb and _\<NN\>_ is a sequential counter for each machine that you may have (starting at 00). For example:
 
-> `NODE_NAME="REG_ExampleOrg_T_2_8_00"`
+> `NODE_NAME="REG_ExampleOrg_B_2_8_00"`
 
-This is the name that will be given to the docker container. For the moment it does not have any other usage.
+This is the name that will be given to the docker container.
+
+
 
 * To start the node run:
 
