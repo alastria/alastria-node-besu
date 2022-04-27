@@ -7,6 +7,13 @@
 
 Alastria red B Network is a public-permissioned Blockchain network that uses the [Hyperledger BESU](https://www.hyperledger.org/use/besu) technology, [IBFT 2.0](https://besu.hyperledger.org/en/stable/Tutorials/Private-Network/Create-IBFT-Network/) consensus algorithm, and it's managed by [Alastria](https://alastria.io/en/) partners, :vulcan_salute:.
 
+There are 2 main steps to set up an Alatria Node:
+
+**1. Installation & configuration:** Follow the Docker installation steps and your node will be ready.
+
+**2. Getting permissioned:** In order to use Alastria Network, your node must be previously accepted. 
+
+
 If you are a _rookie_ in Blockchain or Ethereum please consider reading these references:
 
 - https://besu.hyperledger.org/en/stable/
@@ -18,15 +25,42 @@ If you would like you to know more about [Hyperledger](https://www.hyperledger.o
 
 [Alastria](https://alastria.io/en/) partners can add its own node. Otherwise contact support@alastria.io to start with administrative permissioning.
 
-Nodes in the network must be permissioned. Do the installation process and then fill out this [electronic form](https://forms.gle/mcJNnTE81Z3P1g8K6). Other guides related with operation of Alastria Node are available in following documents:
+There are 2 main steps to set up an Alatria Node:
 
-- Alastria Networks Operation and Government Policies [(en_GB)](https://alastria.io/wp-content/uploads/2020/04/POLI-TICAS-GOBIERNO-Y-OPERACIO-N-RED-ALASTRIA-V1.01-DEF-en-GB.pdf), [(es_ES)](https://alastria.io/wp-content/uploads/2020/04/POLI-TICAS-GOBIERNO-Y-OPERACIO-N-RED-ALASTRIA-V1.01-DEF.pdf)
+**1. Installation:** Follow the installation process and your node will be ready to be permissioned.
 
-- Alastria Network Operational Conditions for Regular Nodes [(en_GB)](https://alastria.io/wp-content/uploads/2020/06/CONDICIONES-USO-RED-NODOS-REGULARES-A-LA-RED-ALASTRIA-v1.1-DEF-en-GB.pdf), [(es_ES)](https://alastria.io/wp-content/uploads/2020/06/CONDICIONES-USO-RED-NODOS-REGULARES-A-LA-RED-ALASTRIA-v1.1-DEF.pdf)
+**2. Getting permissioned:** In order to use Alastria Network, your node must be previously accepted, after filling the form. 
 
-- Alastria Network Operational Conditions for Critial Nodes (boot && validator) Nodes [(en_GB)](https://alastria.io/wp-content/uploads/2020/06/CONDICIONES-OPERACIO-N-RED-T-POR-PARTE-DE-NODOS-CRI-TICOS-V1.1-DEF-en-GB.pdf), [(es_ES)](https://alastria.io/wp-content/uploads/2020/06/CONDICIONES-OPERACIO%CC%81N-RED-T-POR-PARTE-DE-NODOS-CRI%CC%81TICOS-V1.1-DEF.pdf)
+If a member wants to remove a node from the network, please send us a **removal request** using the same [electronic form](https://forms.gle/UCnATiaJ4LPdGjP97).
 
-If a member wants to remove a node from the network, please send us a **removal request** using the same [electronic form](https://portal.r2docuo.com/alastria/forms/noderequest).
+
+# 1) Installation
+
+### Node Types
+- Users who want deploy applications should use [Regular node Installation Guide](docs/Regular-Configuration&Installation.md)
+- Users who want to improve the availability of the network should add a `Core Node`. Keep in mind the dedicated use of these nodes and the special security considerations for these core nodes. Please, open a Issue to be evaluated by Core Team.
+
+### Option 1 - baremetal
+
+The following guide is ready for installation on a dedicated machine (bare metal, virtual machine,...), with data files stored on `/data` partition.
+**Please**, consider the following guide to add a [dedicated disk](docs/mount-dedicated-disk.md) for the node database, independent of the system disk.
+
+### Option 2 - docker-compose
+
+Read the following guide to make a [Regular Node Installation with Docker](docs/Configuration%26Installation-with-docker.md)
+
+# 2) Permissioning new node
+
+Please, fill this [electronic form](https://forms.gle/mcJNnTE81Z3P1g8K6) and provide the following information in order to get the permission for joining the network:
+
+* The exact Node Name.
+* The public IP for your node. Get your public IP, for example, with `curl ifconfig.me`. Remember that the hosting should be in _Eurozone_.
+* The hosting provider for your node, in case you use one. Otherwise, use `SelfHosting`.
+* The system configuration: number of cores, memory and harddisk reserved for the node.
+* Enode direction. You can find it in `/data/alastria-node-besu/keys/nodeAddress` file, or using `curl -X POST --data '{"jsonrpc":"2.0","method":"admin_nodeInfo","params":[],"id":1}' http://127.0.0.1:8545`.
+
+
+# Infraestructure details
 
 ## System requirements
 
@@ -74,30 +108,7 @@ Notes:
 - :warning: Opening web3 ports, can be tuned in `/data/alastria-node-besu/config/config.toml` file: listening interface, `web3` methods available,...
 - Ninja sysadmins don't use outbound firewall rules :joy:
 
-## Installation
 
-### Node Types
-- Users who want deploy applications should use [Regular node Installation Guide](docs/Regular-Configuration&Installation.md)
-- Users who want to improve the availability of the network should add a `Core Node`. Keep in mind the dedicated use of these nodes and the special security considerations for these core nodes. Please, open a Issue to be evaluated by Core Team.
-
-### Option 1 - baremetal
-
-The following guide is ready for installation on a dedicated machine (bare metal, virtual machine,...), with data files stored on `/data` partition.
-**Please**, consider the following guide to add a [dedicated disk](docs/mount-dedicated-disk.md) for the node database, independent of the system disk.
-
-### Option 2 - docker-compose
-
-Read the following guide to make a [Regular Node Installation with Docker](docs/Configuration%26Installation-with-docker.md)
-
-## Permissioning new node
-
-Please, open an issue in this repository and provide the following information in order to get the permission for joining the network:
-
-* The exact Node Name provided in this [electronic form](https://portal.r2docuo.com/alastria/forms/noderequest).
-* The public IP for your node. Get your public IP, for example, with `curl ifconfig.me`. Remember that the hosting should be in _Eurozone_.
-* The hosting provider for your node, in case you use one. Otherwise, use `SelfHosting`.
-* The system configuration: number of cores, memory and harddisk reserved for the node.
-* Enode direction. You can find it in `/data/alastria-node-besu/keys/nodeAddress` file, or using `curl -X POST --data '{"jsonrpc":"2.0","method":"admin_nodeInfo","params":[],"id":1}' http://127.0.0.1:8545`.
 
 ## Help! :fire_extinguisher:
 
@@ -120,13 +131,6 @@ You can add yourself to the following channels:
 
 - `#besu-group` Channel for the `red B` team, :beer:
 
-### Open an issue
-
-If you need to open an issue on the [alastria-node-besu](https://github.com/alastria/alastria-node-besu) repository, please follow the instructions [here](https://help.github.com/articles/creating-an-issue/).
-
-### Create a pull request
-
-If you want to do a Pull Request on the [alastria-node-besu](https://github.com/alastria/alastria-node-besu) repository, please follow [these](https://services.github.com/on-demand/github-cli/open-pull-request-github) instructions.
 
 ## FAQ
 
@@ -185,3 +189,13 @@ It's in your hands! [Alastria](https://alastria.io/en/) is an open group and eve
 
 - [Red B Epirus Network Explorer](https://redb.trustos.telefonica.com/) - Hosted by Telefónica
 - [Red B Network Monitor](https://alastria-netstats2.planisys.net:8443/?orgId=1) - Hosted by Planisys
+
+
+
+### Operation documents of Alastria nodes
+
+- Alastria Networks Operation and Government Policies [(en_GB)](https://alastria.io/wp-content/uploads/2020/04/POLI-TICAS-GOBIERNO-Y-OPERACIO-N-RED-ALASTRIA-V1.01-DEF-en-GB.pdf), [(es_ES)](https://alastria.io/wp-content/uploads/2020/04/POLI-TICAS-GOBIERNO-Y-OPERACIO-N-RED-ALASTRIA-V1.01-DEF.pdf)
+
+- Alastria Network Operational Conditions for Regular Nodes [(en_GB)](https://alastria.io/wp-content/uploads/2020/06/CONDICIONES-USO-RED-NODOS-REGULARES-A-LA-RED-ALASTRIA-v1.1-DEF-en-GB.pdf), [(es_ES)](https://alastria.io/wp-content/uploads/2020/06/CONDICIONES-USO-RED-NODOS-REGULARES-A-LA-RED-ALASTRIA-v1.1-DEF.pdf)
+
+- Alastria Network Operational Conditions for Critial Nodes (boot && validator) Nodes [(en_GB)](https://alastria.io/wp-content/uploads/2020/06/CONDICIONES-OPERACIO-N-RED-T-POR-PARTE-DE-NODOS-CRI-TICOS-V1.1-DEF-en-GB.pdf), [(es_ES)](https://alastria.io/wp-content/uploads/2020/06/CONDICIONES-OPERACIO%CC%81N-RED-T-POR-PARTE-DE-NODOS-CRI%CC%81TICOS-V1.1-DEF.pdf)
