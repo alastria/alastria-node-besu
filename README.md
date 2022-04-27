@@ -18,7 +18,7 @@ If you would like you to know more about [Hyperledger](https://www.hyperledger.o
 
 [Alastria](https://alastria.io/en/) partners can add its own node. Otherwise contact support@alastria.io to start with administrative permissioning.
 
-Nodes in the network must be permissioned. Do the installation process and then fill out this [electronic form](https://portal.r2docuo.com/alastria/forms/noderequest). Other guides related with operation of Alastria Node are available in following documents:
+Nodes in the network must be permissioned. Do the installation process and then fill out this [electronic form](https://forms.gle/mcJNnTE81Z3P1g8K6). Other guides related with operation of Alastria Node are available in following documents:
 
 - Alastria Networks Operation and Government Policies [(en_GB)](https://alastria.io/wp-content/uploads/2020/04/POLI-TICAS-GOBIERNO-Y-OPERACIO-N-RED-ALASTRIA-V1.01-DEF-en-GB.pdf), [(es_ES)](https://alastria.io/wp-content/uploads/2020/04/POLI-TICAS-GOBIERNO-Y-OPERACIO-N-RED-ALASTRIA-V1.01-DEF.pdf)
 
