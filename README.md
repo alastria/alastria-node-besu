@@ -36,18 +36,54 @@ If a member wants to remove a node from the network, please send us a **removal 
 
 # 1) Installation
 
-### Node Types
-- Users who want deploy applications should use [Regular node Installation Guide](docs/Regular-Configuration&Installation.md)
-- Users who want to improve the availability of the network should add a `Core Node`. Keep in mind the dedicated use of these nodes and the special security considerations for these core nodes. Please, open a Issue to be evaluated by Core Team.
+Before starting, consider the following guide to add a [dedicated disk](docs/mount-dedicated-disk.md) for the node database, independent of the system disk.
 
-### Option 1 - baremetal
+The following process explains the installation for a node:
 
-The following guide is ready for installation on a dedicated machine (bare metal, virtual machine,...), with data files stored on `/data` partition.
-**Please**, consider the following guide to add a [dedicated disk](docs/mount-dedicated-disk.md) for the node database, independent of the system disk.
+* Clone or download this repository into `/data` directory:
 
-### Option 2 - docker-compose
+```sh
+$ sudo mount /data
+$ cd /data
+$ sudo git clone https://github.com/alastria/alastria-node-besu.git
+```
 
-Read the following guide to make a [Regular Node Installation with Docker](docs/Configuration%26Installation-with-docker.md)
+* Edit the `.env` file in the **docker-compose** directory and modify the NODE_NAME attribute:
+
+> Set the NODE_NAME attribute according to the name you want for this node. The name SHOULD follow the convention: `REG_<COMPANY>_B_<Y>_<Z>_<NN>`
+
+Where _\<COMPANY\>_ is your company/entity name, _\<Y\>_ is the number of processors of the machine, _\<Z\>_ is the amount of memory in Gb and _\<NN\>_ is a sequential counter for each machine that you may have (starting at 00). For example:
+
+> `NODE_NAME="REG_ExampleOrg_B_2_8_00"`
+
+This is the name that will be given to the docker container.
+
+
+
+* To start the node run:
+
+```sh
+$ docker-compose up -d
+```
+
+We are done. Now, we will have the followings available:
+
+* Node's database at `/data/alastria-node-besu/database`
+  
+* Node's logging files at `/data/alastria-node-besu/logs`
+  
+## Keeping control over the keys  
+  
+The keys of the node will be available inside the container, and are keept through restarts thanks to the `keys` docker volume. We can create the `/data/alastria-node-besu/keys` directory and copy there the **key**, **key.pub** and **nodeAddress** files from the container. Editting the `docker-compose.yaml` file to make this change:
+
+> ~~\- keys:/data/alastria-node-besu/keys~~ &rarr; \- /data/alastria-node-besu/keys:/data/alastria-node-besu/keys
+
+we can now remove the container and start a new one keeping the logs, the database and the keys accesible outside the container:
+
+```sh
+$ docker-compose down
+$ docker-compose up -d
+```
 
 # 2) Permissioning new node
 
@@ -59,6 +95,17 @@ Please, fill this [electronic form](https://forms.gle/mcJNnTE81Z3P1g8K6) and pro
 * The system configuration: number of cores, memory and harddisk reserved for the node.
 * Enode direction. You can find it in `/data/alastria-node-besu/keys/nodeAddress` file, or using `curl -X POST --data '{"jsonrpc":"2.0","method":"admin_nodeInfo","params":[],"id":1}' http://127.0.0.1:8545`.
 
+# Adding automatic checking for updates in node lists
+
+If your installation was done with docker-compose everything is set up in the container and there's nothing else to do :tada:
+
+However, if your installation was done prior to June 2022, ensure you have the more up-to-date code running in your machine following these steps:
+
+* Stop the node with `docker-compose down`
+* Do a backup of the `docker-compose.yml` and the `.env` files to make sure you don't lose any configuration
+* Pull the more current code from the repository with `git pull`
+* Edit the `docker-compose.yml` and the `.env` files if you need a custom configuration in `volumes` and `ports` sections, and to set the type and the name of your node
+* Start the container forcing the image to be build again with `docker-compose up --build -d`
 
 # Infraestructure details
 
