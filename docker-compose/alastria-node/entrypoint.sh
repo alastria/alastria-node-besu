@@ -59,5 +59,9 @@ case ${NODE_TYPE} in
 	;;
 esac
 
+# Set the cron task to update peers every hour (if there are any changes)
+echo "`date +"%M"` * * * * /usr/local/bin/checkForUpdates.sh" > /etc/crontabs/root
+crond -l 2 -f > /dev/stdout 2> /dev/stderr &
+
 # Start Besu
 exec /data/alastria-node-besu/bin/besu --config-file=/data/alastria-node-besu/config/config.toml
