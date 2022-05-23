@@ -15,7 +15,7 @@ RUN bin/besu --data-path=. public-key export --to=key.pub && \
     mkdir -p keys && \
     mv key key.pub nodeAddress keys/
 
-COPY entrypoint.sh /usr/local/bin/
-RUN ["chmod", "+x", "/usr/local/bin/entrypoint.sh"]
+COPY entrypoint.sh checkForUpdates.sh /usr/local/bin/
+RUN ["chmod", "+x", "/usr/local/bin/entrypoint.sh", "/usr/local/bin/checkForUpdates.sh"]
 
 ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
