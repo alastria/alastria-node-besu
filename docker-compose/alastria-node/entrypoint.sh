@@ -24,6 +24,8 @@ if [[ ! -e ./config/config.toml ]]; then
 			echo 'permissions-nodes-config-file="/data/alastria-node-besu/config/allowed-nodes.toml"' >> ./config/config.toml
 			echo '' >> ./config/config.toml
 			printf 'bootnodes=%s' "$(cat ./validator-nodes.json)" >> ./config/config.toml
+			echo '' >> ./config/config.toml
+			echo 'auto-log-bloom-caching-enabled=false' >> ./config/config.toml
 			
 		;;
 		"regular")
