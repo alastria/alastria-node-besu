@@ -98,7 +98,7 @@ All nodes in  Alastria Networks must be permissioned. To ask for permission you 
 
 In order to get permissioning, follow these steps to get the information that you will be asked for in the previous form:
 
-* You can find the ENODE in `/data/alastria-node-besu/keys/nodeAddress` file, or using `curl -X POST --data '{"jsonrpc":"2.0","method":"admin_nodeInfo","params":[],"id":1}' http://127.0.0.1:8545`.
+* You can find the ENODE_ADDRESS using `curl -X POST --data '{"jsonrpc":"2.0","method":"admin_nodeInfo","params":[],"id":1}' http://127.0.0.1:8545`.
 
 * Get the IP address of your node, as seen from the external world. 
 
