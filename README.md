@@ -87,13 +87,26 @@ $ docker-compose up -d
 
 # 2) Permissioning new node
 
-Please, fill this [electronic form](https://forms.gle/mcJNnTE81Z3P1g8K6) and provide the following information in order to get the permission for joining the network:
+All nodes in  Alastria Networks must be permissioned. To ask for permission you must enter your data in this [electronic form](https://forms.gle/BiRqqgg2V7zbxF3c7), providing these information of your node: 
 
-* The exact Node Name.
-* The public IP for your node. Get your public IP, for example, with `curl ifconfig.me`. Remember that the hosting should be in _Eurozone_.
-* The hosting provider for your node, in case you use one. Otherwise, use `SelfHosting`.
-* The system configuration: number of cores, memory and harddisk reserved for the node.
-* Enode direction. You can find it in `/data/alastria-node-besu/keys/nodeAddress` file, or using `curl -X POST --data '{"jsonrpc":"2.0","method":"admin_nodeInfo","params":[],"id":1}' http://127.0.0.1:8545`.
+**1. ENODE:** String ENODE from ENODE_ADDRESS (enode://ENODE@IP:30303)
+
+**2. Public IP:** The external IP of your node.
+
+**3. System details:** Hosting provider, number of cores (vCPUs), RAM Memory and Hard disk size.
+
+
+In order to get permissioning, follow these steps to get the information that you will be asked for in the previous form:
+
+* You can find the ENODE in `/data/alastria-node-besu/keys/nodeAddress` file, or using `curl -X POST --data '{"jsonrpc":"2.0","method":"admin_nodeInfo","params":[],"id":1}' http://127.0.0.1:8545`.
+
+* Get the IP address of your node, as seen from the external world. 
+
+```console
+$ curl https://ifconfig.me/
+```
+
+* Once your request is fulfilled after form submission, you will see that your node starts connecting to its peers and starts synchronizing the blockchain. The process of synchronization can take hours or even one or two days depending on the speed of your network and machine.
 
 # Adding automatic checking for updates in node lists
 
