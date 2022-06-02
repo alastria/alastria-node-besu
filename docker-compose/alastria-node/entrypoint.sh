@@ -15,14 +15,14 @@ case ${NODE_TYPE} in
 	"validator")
 	
 		network_nodes=$(echo "[$(cat ./validator-nodes.json), $(cat ./regular-nodes.json)]" | jq '[.[0][], .[1][]]' | jq --arg ENODE "$(cat ./keys/key.pub | cut -c 3-)" 'del(.[] | select(. | contains($ENODE)))')
-		[[ ! -e ./config/allowed-nodes.toml ]] && echo "nodes-allowlist=$network_nodes" > ./config/allowed-nodes.toml
-		[[ ! -e ./config/static-nodes.json ]] && echo $network_nodes > ./config/static-nodes.json
+		echo "nodes-allowlist=$network_nodes" > ./config/allowed-nodes.toml
+		echo $network_nodes > ./config/static-nodes.json
 		
 	;;
 	"regular")
 	
-		[[ ! -e ./config/allowed-nodes.toml ]] && echo "nodes-allowlist=$(cat ./validator-nodes.json)" > ./config/allowed-nodes.toml
-		[[ ! -e ./config/static-nodes.json ]] && cp ./validator-nodes.json ./config/static-nodes.json
+		echo "nodes-allowlist=$(cat ./validator-nodes.json)" > ./config/allowed-nodes.toml
+		cp ./validator-nodes.json ./config/static-nodes.json
 		
 	;;
 	*)
