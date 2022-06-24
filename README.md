@@ -248,9 +248,9 @@ It's in your hands! [Alastria](https://alastria.io/en/) is an open group and eve
 ## Links
 
 - [Red B Epirus Network Explorer](https://redb.trustos.telefonica.com/) - Hosted by Telefónica
-- [Red B Network Monitor](https://alastria-netstats2.planisys.net:8443/?orgId=1) - Hosted by Planisys
-
-
+- Red B Network Monitor (login alastria/alastria) - Hosted by Planisys
+  - [Regular nodes](https://alastria-netstats.planisys.net:8443/d/htKGWMq7k/alastria-besu-regulars?orgId=1&refresh=5s) 
+  - [Validator nodes](https://alastria-netstats.planisys.net:8443/d/6M-DlWq7z/alastria-besu-validators?orgId=1&refresh=5s)
 
 ### Operation documents of Alastria nodes
 
