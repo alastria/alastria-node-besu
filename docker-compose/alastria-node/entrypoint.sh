@@ -41,6 +41,7 @@ if [[ ! -e ./config/config.toml ]]; then
 			echo 'rpc-http-api=["ETH","NET","WEB3","ADMIN","IBFT","PERM"]' >> ./config/config.toml
 			echo '' >> ./config/config.toml
 			echo 'auto-log-bloom-caching-enabled=false' >> ./config/config.toml
+			echo 'max-peers=256' >> ./config/config.toml
 			
 		;;
 		"regular")
