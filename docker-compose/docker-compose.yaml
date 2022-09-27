@@ -3,7 +3,7 @@
 version: "3.7"
 
 services:
-    alastria-node:
+    alastria-node-besu:
         build: ./alastria-node
         restart: unless-stopped
         container_name: ${NODE_NAME}
