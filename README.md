@@ -233,7 +233,9 @@ $ curl -X POST --data '{"jsonrpc":"2.0","method":"admin_peers","params":[],"id":
 $ curl -X POST --data '{"jsonrpc":"2.0","method":"admin_nodeInfo","params":[],"id":1}' http://127.0.0.1:8545
 ```
 
-Other `ADMIN` methods, in https://besu.hyperledger.org/en/stable/Reference/API-Methods/
+Other `ADMIN` methods, in [Besu API method](https://besu.hyperledger.org/en/stable/public-networks/reference/api/)
+
+Also, `IBFT` and `PERM` methods, in [Private network API methods](https://besu.hyperledger.org/en/stable/private-networks/reference/api/)
 
 - Will the functionality (docker | ansible | whatever) be supported soon?
 
