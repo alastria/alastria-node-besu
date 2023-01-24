@@ -2,8 +2,13 @@
 
 set -e
 
-mkdir -p /data/alastria-node-besu/config
 cd /data/alastria-node-besu
+
+# Create keys files
+/data/alastria-node-besu/bin/besu --data-path=./keys public-key export --to=./keys/key.pub
+/data/alastria-node-besu/bin/besu --data-path=./keys public-key export-address --to=./keys/nodeAddress
+
+mkdir -p config
 
 [[ ! -e ./config/genesis.json ]] && wget -q -O ./config/genesis.json https://raw.githubusercontent.com/alastria/alastria-node-besu-directory/${NODE_BRANCH}/config/genesis.json
 [[ ! -e ./config/log-config.xml ]] && wget -q -O ./config/log-config.xml https://raw.githubusercontent.com/alastria/alastria-node-besu-directory/${NODE_BRANCH}/config/log-config.xml
@@ -60,6 +65,8 @@ if [[ ! -e ./config/config.toml ]]; then
 	esac
 
 fi
+
+
 
 # Set the cron task to update peers every hour (if there are any changes)
 echo "`date +"%M"` * * * * /usr/local/bin/checkForUpdates.sh" > /etc/crontabs/root

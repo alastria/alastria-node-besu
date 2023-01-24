@@ -10,7 +10,7 @@ services:
         volumes:
             - /data/alastria-node-besu/database:/data/alastria-node-besu/database
             - /data/alastria-node-besu/logs:/data/alastria-node-besu/logs
-            - keys:/data/alastria-node-besu/keys
+            - /data/alastria-node-besu/keys:/data/alastria-node-besu/keys
         ports:
             - "30303:30303/tcp"
             - "30303:30303/udp"
@@ -27,6 +27,3 @@ services:
             - LOG4J_CONFIGURATION_FILE=/data/alastria-node-besu/config/log-config.xml
             - NODE_TYPE=${NODE_TYPE}
             - NODE_BRANCH=${NODE_BRANCH}
-            
-volumes:
-    keys:

@@ -10,11 +10,6 @@ RUN wget https://hyperledger.jfrog.io/artifactory/besu-binaries/besu/$VERSION_BE
 RUN ln -s /data/alastria-node-besu/besu-$VERSION_BESU/bin bin
 RUN ln -s /data/alastria-node-besu/besu-$VERSION_BESU/lib lib
 
-RUN bin/besu --data-path=. public-key export --to=key.pub && \
-    bin/besu --data-path=. public-key export-address --to=nodeAddress && \
-    mkdir -p keys && \
-    mv key key.pub nodeAddress keys/
-
 COPY entrypoint.sh checkForUpdates.sh /usr/local/bin/
 RUN ["chmod", "+x", "/usr/local/bin/entrypoint.sh", "/usr/local/bin/checkForUpdates.sh"]
 
