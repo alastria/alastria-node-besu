@@ -58,8 +58,6 @@ Where _\<COMPANY\>_ is your company/entity name, _\<Y\>_ is the number of proces
 
 This is the name that will be given to the docker container.
 
-
-
 * To start the node run:
 
 ```sh
@@ -71,19 +69,8 @@ We are done. Now, we will have the followings available:
 * Node's database at `/data/alastria-node-besu/database`
   
 * Node's logging files at `/data/alastria-node-besu/logs`
-  
-## Keeping control over the keys  
-  
-The keys of the node will be available inside the container, and are keept through restarts thanks to the `keys` docker volume. We can create the `/data/alastria-node-besu/keys` directory and copy there the **key**, **key.pub** and **nodeAddress** files from the container. Editting the `docker-compose.yaml` file to make this change:
 
-> ~~\- keys:/data/alastria-node-besu/keys~~ &rarr; \- /data/alastria-node-besu/keys:/data/alastria-node-besu/keys
-
-we can now remove the container and start a new one keeping the logs, the database and the keys accesible outside the container:
-
-```sh
-$ docker-compose down
-$ docker-compose up -d
-```
+* Node's keys files at `/data/alastria-node-besu/keys`
 
 # 2) Permissioning new node
 
