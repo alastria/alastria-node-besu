@@ -40,15 +40,17 @@ Before starting, consider the following guide to add a [dedicated disk](docs/mou
 
 The following process explains the installation for a node:
 
-* Clone or download this repository into `/data` directory:
+* Clone or download this repository:
 
 ```sh
-$ sudo mount /data
-$ cd /data
-$ sudo git clone https://github.com/alastria/alastria-node-besu.git
+git clone https://github.com/alastria/alastria-node-besu.git
 ```
 
 * Edit the `.env` file in the **docker-compose** directory and modify the NODE_NAME attribute:
+
+```sh
+cd alastria-node-besu/docker-compose
+```
 
 > Set the NODE_NAME attribute according to the name you want for this node. The name SHOULD follow the convention: `REG_<COMPANY>_B_<Y>_<Z>_<NN>`
 
@@ -58,10 +60,12 @@ Where _\<COMPANY\>_ is your company/entity name, _\<Y\>_ is the number of proces
 
 This is the name that will be given to the docker container.
 
+* Optionally, uncomment the RPC API and/or WebSocket ports of the container in the `docker-compose.yaml` if you need to use them.
+
 * To start the node run:
 
 ```sh
-$ docker-compose up -d
+docker-compose up -d
 ```
 
 We are done. Now, we will have the followings available:
@@ -90,7 +94,7 @@ In order to get permissioning, follow these steps to get the information that yo
 * Get the IP address of your node, as seen from the external world. 
 
 ```console
-$ curl https://ifconfig.me/
+curl https://ifconfig.me/
 ```
 
 * Once your request is fulfilled after form submission, you will see that your node starts connecting to its peers and starts synchronizing the blockchain. The process of synchronization can take hours or even one or two days depending on the speed of your network and machine.
@@ -145,7 +149,7 @@ Notes:
 
 | Port | Type | From            | Definition                                        |
 | :--- | :--- | :-------------- | :------------------------------------------------ |
-| 8080 | TCP  | (orion parners) | Orion port (in case you use private transactions) |
+| 8080 | TCP  | (orion parners) | :warning: **DEPRECATED** Orion port (in case you use private transactions) |
 | 8545 | TCP  | (web3 client)   | json+rpc (in case you use remix/truffle/.../web3) |
 | 8546 | TCP  | (web3 client)   | json+ws (in case you use remix/truffle/.../web3)  |
 
@@ -181,10 +185,10 @@ You can add yourself to the following channels:
 
 ## FAQ
 
-- How to launch an interactive console for debugging purposes?
+- How how can I see the logs of the container?  
 
 ```sh
-$ sudo /data/alastria-node-besu/bin/besu --config-file="/data/alastria-node-besu/config/config.toml"
+docker logs -f NODE_NAME
 ```
 
 - How to know if the node is already permissioned?
@@ -200,39 +204,27 @@ The last column should show, at least, one "Peer".
 Use `eth_syncing` [method](https://web3py.readthedocs.io/en/stable/web3.eth.html#web3.eth.Eth.syncing) to see the synchronization progress:
 
 ```sh
-$ curl -X POST --data '{"jsonrpc":"2.0","method":"eth_syncing","params":[],"id":1}' http://127.0.0.1:8545
+curl -X POST --data '{"jsonrpc":"2.0","method":"eth_syncing","params":[],"id":1}' http://127.0.0.1:8545
 ```
 
 - How can I manage the node?
 
-Enable this object at the node: add "ADMIN" to the list of supported methods:
-
 ```sh
-$ sudo vim /data/alastria-node-besu/config/config.toml
-
-[...]
-rpc-http-api=["ADMIN", "ETH","NET","WEB3"]
-[...]
-```
-
-```sh
-$ curl -X POST --data '{"jsonrpc":"2.0","method":"admin_peers","params":[],"id":1}' http://127.0.0.1:8545
-$ curl -X POST --data '{"jsonrpc":"2.0","method":"admin_nodeInfo","params":[],"id":1}' http://127.0.0.1:8545
+curl -X POST --data '{"jsonrpc":"2.0","method":"admin_peers","params":[],"id":1}' http://127.0.0.1:8545
+curl -X POST --data '{"jsonrpc":"2.0","method":"admin_nodeInfo","params":[],"id":1}' http://127.0.0.1:8545
 ```
 
 Other `ADMIN` methods, in [Besu API method](https://besu.hyperledger.org/en/stable/public-networks/reference/api/)
 
-Also, `IBFT` and `PERM` methods, in [Private network API methods](https://besu.hyperledger.org/en/stable/private-networks/reference/api/)
+Also, `IBFT` and `PERM` methods (for validator nodes), in [Private network API methods](https://besu.hyperledger.org/en/stable/private-networks/reference/api/)
 
 - Will the functionality (docker | ansible | whatever) be supported soon?
 
 It's in your hands! [Alastria](https://alastria.io/en/) is an open group and everyone is welcome to contribute. If you need any support we are here to help :hugs:
 
-- Connection from Remix
-  (TBD)
+- Connection from Remix/Truffle/Hardhat
 
-- Connection from Truffle
-  (TBD)
+You can refer to the [smart-contract-deployment](https://github.com/alastria/smart-contract-deployment) repository.
 
 ## Links
 
@@ -243,8 +235,8 @@ It's in your hands! [Alastria](https://alastria.io/en/) is an open group and eve
 
 ### Operation documents of Alastria nodes
 
-- Alastria Networks Operation and Government Policies [(en_GB)](https://alastria.io/wp-content/uploads/2020/04/POLI-TICAS-GOBIERNO-Y-OPERACIO-N-RED-ALASTRIA-V1.01-DEF-en-GB.pdf), [(es_ES)](https://alastria.io/wp-content/uploads/2020/04/POLI-TICAS-GOBIERNO-Y-OPERACIO-N-RED-ALASTRIA-V1.01-DEF.pdf)
+- Alastria Networks Operation and Government Policies [(en_GB)](https://alastria.io/wp-content/uploads/2022/12/POLI-TICAS-GOBIERNO-Y-OPERACIO-N-RED-ALASTRIA-V1.01-DEF-en-GB.pdf), [(es_ES)](https://alastria.io/wp-content/uploads/2022/09/POLI-TICAS-GOBIERNO-Y-OPERACIO-N-RED-ALASTRIA-V1.01-DEF.pdf)
 
-- Alastria Network Operational Conditions for Regular Nodes [(en_GB)](https://alastria.io/wp-content/uploads/2020/06/CONDICIONES-USO-RED-NODOS-REGULARES-A-LA-RED-ALASTRIA-v1.1-DEF-en-GB.pdf), [(es_ES)](https://alastria.io/wp-content/uploads/2020/06/CONDICIONES-USO-RED-NODOS-REGULARES-A-LA-RED-ALASTRIA-v1.1-DEF.pdf)
+- Alastria Network Operational Conditions for Regular Nodes [(en_GB)](https://alastria.io/wp-content/uploads/2022/12/CONDICIONES-USO-RED-NODOS-REGULARES-A-LA-RED-ALASTRIA-v1.1-DEF-en-GB.pdf), [(es_ES)](https://alastria.io/wp-content/uploads/2022/09/CONDICIONES-USO-RED-NODOS-REGULARES-A-LA-RED-ALASTRIA-v1.1-DEF.pdf)
 
-- Alastria Network Operational Conditions for Critial Nodes (boot && validator) Nodes [(en_GB)](https://alastria.io/wp-content/uploads/2020/06/CONDICIONES-OPERACIO-N-RED-T-POR-PARTE-DE-NODOS-CRI-TICOS-V1.1-DEF-en-GB.pdf), [(es_ES)](https://alastria.io/wp-content/uploads/2020/06/CONDICIONES-OPERACIO%CC%81N-RED-T-POR-PARTE-DE-NODOS-CRI%CC%81TICOS-V1.1-DEF.pdf)
+- Alastria Network Operational Conditions for Critial Nodes (boot & validator) Nodes [(en_GB)](https://alastria.io/wp-content/uploads/2022/12/CONDICIONES-OPERACIO-N-RED-T-POR-PARTE-DE-NODOS-CRI-TICOS-V1.1-DEF-en-GB.pdf), [(es_ES)](https://alastria.io/wp-content/uploads/2022/10/CONDICIONES-OPERACION-RED-T-POR-PARTE-DE-NODOS-CRITICOS-V1.1-DEF.pdf)
