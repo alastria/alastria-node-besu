@@ -125,7 +125,7 @@ However, if your installation was done prior to June 2022, ensure you have the m
 | :------------- | :------ | :------ |
 | **CPU's**:     | 2       | 4       |
 | **Memory**:    | 4 Gb    | 8 Gb    |
-| **Hard Disk**: | 64 Gb   | 256 Gb  |
+ |**Hard Disk**: | 64 Gb   | 256 Gb  |
 
 Blockchain database is about 16Gb at mid-2021 and grows at rate of 2Gb/month. Take this into consideration when provisioning space for cache, logs etc.
 
