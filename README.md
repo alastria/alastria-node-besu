@@ -125,7 +125,7 @@ However, if your installation was done prior to June 2022, ensure you have the m
 | :------------- | :------ | :------ |
 | **CPU's**:     | 2       | 4       |
 | **Memory**:    | 4 Gb    | 8 Gb    |
-| **Hard Disk (SSD)**: | 32 Gb   | 256 Gb  |
+|**Hard Disk (SSD)**: | 64 Gb   | 256 Gb  |
 
 Blockchain database is about 16Gb at mid-2021 and grows at rate of 2Gb/month. Take this into consideration when provisioning space for cache, logs etc.
 [SSD Disk is mandatory](https://besu.hyperledger.org/public-networks/get-started/system-requirements#disk-type)
@@ -229,8 +229,8 @@ You can refer to the [smart-contract-deployment](https://github.com/alastria/sma
 
 ## Links
 
-- [Red B Epirus Network Explorer](https://redb.trustos.telefonica.com/) - Hosted by Telefónica
-- Red B Network Monitor (login alastria/alastria) - Hosted by Planisys
+- [Red B Blockscout Network Explorer](https://b-network.alastria.izer.tech/) - Hosted by [Izertis](https://www.izertis.com/) :raised_hands:
+- Red B Network Monitor (login alastria/alastria) - Hosted by Planisys :raised_hands:
   - [Regular nodes](https://alastria-netstats.planisys.net:8443/d/htKGWMq7k/alastria-besu-regulars?orgId=1&refresh=5s) 
   - [Validator nodes](https://alastria-netstats.planisys.net:8443/d/6M-DlWq7z/alastria-besu-validators?orgId=1&refresh=5s)
 
