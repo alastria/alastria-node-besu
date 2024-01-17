@@ -136,20 +136,22 @@ You need to open the following ports to deploy a node:
 
 ### Incoming rules
 
-| Port  | Type | From          | Definition                                   |
-| :---- | :--- | :------------ | :------------------------------------------- |
-| 30303 | TCP  | 0.0.0.0       | Ethereum client data transfer ports          |
-| 30303 | UDP  | 0.0.0.0       | Ethereum client listener and discovery ports |
-| 9545  | TCP  | 185.180.8.152 | External Prometheus metrics                  |
+| Port  | Type | From              | Definition                                   |
+| :---  | :--- | :--               | :---                                         |
+| 30303 | TCP  | 0.0.0.0           | Ethereum client data transfer ports          |
+| 30303 | UDP  | 0.0.0.0           | Ethereum client listener and discovery ports |
+| 9545  | TCP  | ~~185.180.8.152~~ | ~~External Prometheus metrics~~  (*)         |
+
+(*) At the moment, there is no central network monitoring server. While a new system is being provided, we propose adding metric endpoints to your own management infrastructure. 
 
 Notes:
 
-- Logging from `185.180.8.152` is needed in order to pull metrics from `red B` [Network Monitor](https://alastria-netstats2.planisys.net:8443/?orgId=1) (Thanks [Planisys](https://www.planisys.net/) :raised_hands:)
+- Default Alastria configuration exposes BESU metrics in `tcp/9545` port and exposes `http://node_ip:9545/metrics` route in order to be integrated in your local monitoring infraestructure. More information in https://besu.hyperledger.org/public-networks/how-to/monitor/metrics and https://grafana.com/grafana/dashboards/16455-besu-full/. Please, **keep this access restricted to authorized hosts, as described in the documentation**.
 
 ### Optional ports:
 
 | Port | Type | From            | Definition                                        |
-| :--- | :--- | :-------------- | :------------------------------------------------ |
+| :--- | :--- | :---            | :------------------------------------------------ |
 | 8080 | TCP  | (orion parners) | :warning: **DEPRECATED** Orion port (in case you use private transactions) |
 | 8545 | TCP  | (web3 client)   | json+rpc (in case you use remix/truffle/.../web3) |
 | 8546 | TCP  | (web3 client)   | json+ws (in case you use remix/truffle/.../web3)  |
