@@ -38,9 +38,20 @@ If a member wants to remove a node from the network, please send us a **removal 
 
 Before starting, consider the following guide to add a [dedicated disk](docs/mount-dedicated-disk.md) for the node database, independent of the system disk.
 
+The following steps have been referenced both from the installation itself via Docker and the old documentation of the [repository](https://alastria-node-besu.readthedocs.io/en/latest/Regular-Configuration%26Installation/#besu-configuration), as well as old [tutorials](https://github.com/alastria/alastria-node-besu/commit/7073d5e5c937843608934798a72a36525721253f) in previous commits.
+
 The following process explains the installation for a node:
 
-### Install Java
+* #### Clone repository
+
+Clone this repo for begin the proccess.
+
+```sh
+cd /data
+git clone https://github.com/bc-practice/alastria-node-besu.git
+```
+
+* #### Install Java
 
 For version 22.10.3 (currently in repo), the minimun version is Java 11
 ```
@@ -53,7 +64,7 @@ For future versions, it is recommended Java 17
 sudo apt install openjdk-17-jdk openjdk-17-jre
 ```
 
-### Download Besu binaries 
+* #### Download Besu binaries 
 
 First of all, we have to set BESU_VERSION env variable in order to download the correct version of binaries, currently version is 22.10.3
 
@@ -71,7 +82,7 @@ And execute this command to download the specific binaries and unzip them.
 ```
 wget https://hyperledger.jfrog.io/artifactory/besu-binaries/besu/$VERSION_BESU/besu-$VERSION_BESU.tar.gz -O - | tar -xz
 ```
-### Symbolic links
+* #### Symbolic links
 
 Now, we have to create symbolic links to bin and lib folders of the binaries folders recently downloaded in order to use them for correct performance.
 
@@ -79,7 +90,7 @@ Now, we have to create symbolic links to bin and lib folders of the binaries fol
 ln -s /data/alastria-node-besu/versionesBesu/besu-22.10.3/bin bin
 ln -s /data/alastria-node-besu/versionesBesu/besu-22.10.3/lib lib
 ```
-### Create keys
+* #### Create keys
 
 We need to create the new private key and also the public key and node address. We have to exec these commands.
 
@@ -88,7 +99,7 @@ We need to create the new private key and also the public key and node address. 
 /data/alastria-node-besu/bin/besu --data-path=./keys public-key export-address --to=./keys/nodeAddress
 ```
 
-### Config files
+* #### Config files
 
 First step, we have to create config folder.
 ```
@@ -108,7 +119,7 @@ We have to fetch config.toml file and other files that help the node connecting 
 sh ./scripts/fetchConfig.sh
 ```
 
-### Besu service
+* #### Besu service
 
 Using binaries, we can create a systemd service in order to handle it with systemctl.
 We have to create besu.service (example name), in /etc/systemd/system/ (the path may change rely on the OS) with this content.
@@ -170,11 +181,7 @@ Feb 21 09:36:25 a266vmsl besu[29536]: 2024-02-21 09:36:25.530+00:00 | EthSchedul
 Feb 21 09:36:30 a266vmsl besu[29536]: 2024-02-21 09:36:30.531+00:00 | EthScheduler-Timer-0 | INFO  | FullSyncTargetManager | No sync target, waiting for peers. Current peers: 0
 
 ```
-### Update static nodes
 
-Once the Besu node is running we have to check periodically if there're some nodes that have been replaced, in order to do so, we can execute the updateStaticNodes script. We can execute the command manually or, on the other hand, we can set a task in crontab to be executed every hour (or another time frame)
-
-# TODO
 
 We are done. Now, we will have the followings available:
 
@@ -211,13 +218,25 @@ curl https://ifconfig.me/
 
 If your installation was done with docker-compose everything is set up in the container and there's nothing else to do :tada:
 
-However, if your installation was done prior to June 2022, ensure you have the more up-to-date code running in your machine following these steps:
 
-* Stop the node with `docker-compose down`
-* Do a backup of the `docker-compose.yml` and the `.env` files to make sure you don't lose any configuration
-* Pull the more current code from the repository with `git pull`
-* Edit the `docker-compose.yml` and the `.env` files if you need a custom configuration in `volumes` and `ports` sections, and to set the type and the name of your node
-* Start the container forcing the image to be build again with `docker-compose up --build -d`
+With binaries, once the Besu node is running, we have to check periodically if there're some nodes that have been replaced, in order to do so, we can execute the updateStaticNodes script. We can execute the command manually or, on the other hand, we can set a task in crontab to be executed every hour (or another time frame).
+
+To do manually, first we have to set env variables NODE_BRANCH and NODE_TYPE:
+```
+export NODE_TYPE=regular
+export NODE_BRANCH=main
+cd scripts
+sh updateStaticNodes.sh
+```
+Through crontab, we have to set the task. Before that we have to set env variables NODE_BRANCH and NODE_TYPE into the script.
+```
+sed -i '7s/.*/NODE_TYPE=regular\n&/; 8s/.*/NODE_BRANCH=main\n&/' /data/alastria-node-besu/scripts/updateStaticNodes.sh
+sudo vi /etc/crontab
+# Add the task
+0 * * * * <user_name> /data/alastria-node-besu/scripts/updateStaticNodes.sh
+```
+The script will check if there's any difference between local and remote checksums, if so, the target nodes will be replaced.
+
 
 # Infraestructure details
 
