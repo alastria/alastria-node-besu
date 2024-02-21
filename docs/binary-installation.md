@@ -53,9 +53,7 @@ For future versions, it is recommended Java 17
 sudo apt install openjdk-17-jdk openjdk-17-jre
 ```
 
-### Download Besu binaries
-
-#### Script? 
+### Download Besu binaries 
 
 First of all, we have to set BESU_VERSION env variable in order to download the correct version of binaries, currently version is 22.10.3
 
@@ -126,7 +124,7 @@ WorkingDirectory=/data/alastria-node-besu/
 Environment=LOG4J_CONFIGURATION_FILE=config/log-config.xml
 EnvironmentFile=/etc/environment
 Type=simple
-User=alastria_user
+User=<YOUR_USER>
 ExecStart=/data/alastria-node-besu/bin/besu --config-file=config/config.toml
 Restart=always
 RestartSec=30
@@ -134,35 +132,49 @@ RestartSec=30
 [Install]
 WantedBy=multi-user.target
 ```
+
+After that, we have to reload the daemon in order to check that there's a new service that have to be started at boot, with these commands:
+```
+sudo systemctl daemon-reload
+sudo systemctl enable besu.service
+```
+Now we can start the service
+```
+sudo systemctl start besu.service
+```
+And check if it was correctly started.
+
+```
+sudo systemctl status besu.service
+```
+The status result might be something like this:
+
+```
+● besu.service - Alastria Besu Service
+     Loaded: loaded (/lib/systemd/system/besu.service; enabled; vendor preset: enabled)
+     Active: active (running) since Wed 2024-02-21 08:17:36 UTC; 1h 19min ago
+   Main PID: 29536 (java)
+      Tasks: 73 (limit: 9389)
+     Memory: 369.5M
+        CPU: 1min 2.590s
+     CGroup: /system.slice/besu.service
+             └─29536 java -Dvertx.disableFileCPResolving=true -Dbesu.home=/data/alastria-node-besu -Dlog4j.shutdownHookEnabled=false -Dlog4j2.formatMsgNoLookups=true -Djava.util.logging.manager=org.apache.loggin>
+
+Feb 21 09:35:55 a266vmsl besu[29536]: 2024-02-21 09:35:55.525+00:00 | EthScheduler-Timer-0 | INFO  | FullSyncTargetManager | No sync target, waiting for peers. Current peers: 0
+Feb 21 09:36:00 a266vmsl besu[29536]: 2024-02-21 09:36:00.526+00:00 | EthScheduler-Timer-0 | INFO  | FullSyncTargetManager | No sync target, waiting for peers. Current peers: 0
+Feb 21 09:36:05 a266vmsl besu[29536]: 2024-02-21 09:36:05.527+00:00 | EthScheduler-Timer-0 | INFO  | FullSyncTargetManager | No sync target, waiting for peers. Current peers: 0
+Feb 21 09:36:10 a266vmsl besu[29536]: 2024-02-21 09:36:10.528+00:00 | EthScheduler-Timer-0 | INFO  | FullSyncTargetManager | No sync target, waiting for peers. Current peers: 0
+Feb 21 09:36:15 a266vmsl besu[29536]: 2024-02-21 09:36:15.529+00:00 | EthScheduler-Timer-0 | INFO  | FullSyncTargetManager | No sync target, waiting for peers. Current peers: 0
+Feb 21 09:36:20 a266vmsl besu[29536]: 2024-02-21 09:36:20.529+00:00 | EthScheduler-Timer-0 | INFO  | FullSyncTargetManager | No sync target, waiting for peers. Current peers: 0
+Feb 21 09:36:25 a266vmsl besu[29536]: 2024-02-21 09:36:25.530+00:00 | EthScheduler-Timer-0 | INFO  | FullSyncTargetManager | No sync target, waiting for peers. Current peers: 0
+Feb 21 09:36:30 a266vmsl besu[29536]: 2024-02-21 09:36:30.531+00:00 | EthScheduler-Timer-0 | INFO  | FullSyncTargetManager | No sync target, waiting for peers. Current peers: 0
+
+```
+### Update static nodes
+
+Once the Besu node is running we have to check periodically if there're some nodes that have been replaced, in order to do so, we can execute the updateStaticNodes script. We can execute the command manually or, on the other hand, we can set a task in crontab to be executed every hour (or another time frame)
+
 # TODO
-
-* Clone or download this repository:
-
-```sh
-git clone https://github.com/alastria/alastria-node-besu.git
-```
-
-* Edit the `.env` file in the **docker-compose** directory and modify the NODE_NAME attribute:
-
-```sh
-cd alastria-node-besu/docker-compose
-```
-
-> Set the NODE_NAME attribute according to the name you want for this node. The name SHOULD follow the convention: `REG_<COMPANY>_B_<Y>_<Z>_<NN>`
-
-Where _\<COMPANY\>_ is your company/entity name, _\<Y\>_ is the number of processors of the machine, _\<Z\>_ is the amount of memory in Gb and _\<NN\>_ is a sequential counter for each machine that you may have (starting at 00). For example:
-
-> `NODE_NAME="REG_ExampleOrg_B_2_8_00"`
-
-This is the name that will be given to the docker container.
-
-* Optionally, uncomment the RPC API and/or WebSocket ports of the container in the `docker-compose.yaml` if you need to use them.
-
-* To start the node run:
-
-```sh
-docker-compose up -d
-```
 
 We are done. Now, we will have the followings available:
 
