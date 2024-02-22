@@ -133,7 +133,6 @@ StartLimitBurst=5
 StartLimitIntervalSec=200
 WorkingDirectory=/data/alastria-node-besu/
 Environment=LOG4J_CONFIGURATION_FILE=config/log-config.xml
-EnvironmentFile=/etc/environment
 Type=simple
 User=<YOUR_USER>
 ExecStart=/data/alastria-node-besu/bin/besu --config-file=config/config.toml
