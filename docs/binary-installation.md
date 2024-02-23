@@ -114,7 +114,78 @@ wget -q -O ./config/log-config.xml https://raw.githubusercontent.com/alastria/al
 ```
 Now we have log-config.xml and genesis.json files in our config folder.
 
-We have to fetch config.toml file and other files that help the node connecting to the allowed destinations.
+We have to fetch config.toml file and other files that help the node connecting to the allowed destinations depending on the kind of node that we are going to use.
+
+ * No Script (Regular)
+
+First of all, we have to set NODE_TYPE env variable. (In this case, "regular")
+
+```
+NODE_TYPE=regular
+```
+Fetch te github's validator-nodes file.
+```
+wget -q -O ./validator-nodes.json https://raw.githubusercontent.com/alastria/alastria-node-besu-directory/${NODE_BRANCH}/data/validator-nodes.json
+```
+Update allowed-nodes and static-nodes files
+```
+echo "nodes-allowlist=$(cat ./validator-nodes.json)" > ./config/allowed-nodes.toml
+cp ./validator-nodes.json ./config/static-nodes.json
+```
+Copy new validator to config folder
+```
+cp ./validator-nodes.json ./config/validator-nodes.json
+```
+And now, we must get the config.toml file from Alastria's github
+```
+wget -q -O ./config/config.toml https://raw.githubusercontent.com/alastria/alastria-node-besu-directory/${NODE_BRANCH}/config/global-config.toml
+```
+And set specific configutation for Regular node
+```
+echo 'rpc-http-api=["ETH","NET","WEB3","ADMIN"]' >> ./config/config.toml
+echo '' >> ./config/config.toml
+echo 'rpc-ws-enabled=true' >> ./config/config.toml
+echo 'rpc-ws-host="0.0.0.0"' >> ./config/config.toml
+echo 'rpc-ws-api=["ETH","NET","WEB3","ADMIN"]' >> ./config/config.toml
+```
+
+* No Script (Validator)
+
+First of all, we have to set NODE_TYPE env variable. (In this case, "validator")
+
+```
+NODE_TYPE=validator
+```
+Fetch te github's validator-nodes file. In this case, we have to get both files.
+```
+wget -q -O ./validator-nodes.json https://raw.githubusercontent.com/alastria/alastria-node-besu-directory/${NODE_BRANCH}/data/validator-nodes.json
+wget -q -O ./regular-nodes.json https://raw.githubusercontent.com/alastria/alastria-node-besu-directory/${NODE_BRANCH}/data/regular-nodes.json
+```
+Update allowed-nodes and static-nodes files. (We must have jq installed)
+```
+network_nodes=$(echo "[$(cat ./validator-nodes.json), $(cat ./regular-nodes.json)]" | jq '[.[0][], .[1][]]' | jq --arg ENODE "$(cat ./keys/key.pub | cut -c 3-)" 'del(.[] | select(. | contains($ENODE)))')
+echo "nodes-allowlist=$network_nodes" > ./config/allowed-nodes.toml
+echo $network_nodes > ./config/static-nodes.json
+```
+Copy new validator and regular nodes json to config folder
+```
+cp ./validator-nodes.json ./config/validator-nodes.json
+cp ./regular-nodes.json ./config/regular-nodes.json
+```
+
+Now, we must get the config.toml file from Alastria's github
+```
+wget -q -O ./config/config.toml https://raw.githubusercontent.com/alastria/alastria-node-besu-directory/${NODE_BRANCH}/config/global-config.toml
+```
+And set specific configuration for validator node.
+```
+echo 'rpc-http-api=["ETH","NET","WEB3","ADMIN","IBFT","PERM"]' >> ./config/config.toml
+echo '' >> ./config/config.toml
+echo 'auto-log-bloom-caching-enabled=false' >> ./config/config.toml
+echo 'max-peers=256' >> ./config/config.toml
+```
+
+###Script
 ```
 sh ./scripts/fetchConfig.sh
 ```
