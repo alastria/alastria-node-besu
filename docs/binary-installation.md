@@ -38,7 +38,7 @@ If a member wants to remove a node from the network, please send us a **removal 
 
 Before starting, consider the following guide to add a [dedicated disk](docs/mount-dedicated-disk.md) for the node database, independent of the system disk.
 
-The following steps have been referenced both from the installation itself via Docker and the old documentation of the [repository](https://alastria-node-besu.readthedocs.io/en/latest/Regular-Configuration%26Installation/#besu-configuration), as well as old [tutorials](https://github.com/alastria/alastria-node-besu/commit/7073d5e5c937843608934798a72a36525721253f) in previous commits.
+The following steps have been referenced both from the installation itself via Docker and the old documentation of the [repository](https://alastria-node-besu.readthedocs.io/en/latest/Regular-Configuration%26Installation/#besu-configuration), as well as old [tutorials](https://github.com/alastria/alastria-node-besu/commit/7073d5e5c937843608934798a72a36525721253f) found in previous commits.
 
 The following process explains the installation for a node:
 
@@ -116,7 +116,7 @@ Now we have log-config.xml and genesis.json files in our config folder.
 
 We have to fetch config.toml file and other files that help the node connecting to the allowed destinations depending on the kind of node that we are going to use.
 
- * No Script (Regular)
+* ##### No Script (Regular)
 
 First of all, we have to set NODE_TYPE env variable. (In this case, "regular")
 
@@ -149,7 +149,7 @@ echo 'rpc-ws-host="0.0.0.0"' >> ./config/config.toml
 echo 'rpc-ws-api=["ETH","NET","WEB3","ADMIN"]' >> ./config/config.toml
 ```
 
-* No Script (Validator)
+* ##### No Script (Validator)
 
 First of all, we have to set NODE_TYPE env variable. (In this case, "validator")
 
@@ -283,6 +283,29 @@ curl https://ifconfig.me/
 ```
 
 * Once your request is fulfilled after form submission, you will see that your node starts connecting to its peers and starts synchronizing the blockchain. The process of synchronization can take hours or even one or two days depending on the speed of your network and machine.
+
+##### Example
+
+For example, at 26th of February, a regular node spent aprox. 27 hours to complete synchronization.The node's logs will transition from this state:
+```
+2024-02-23 10:02:19.417+00:00 | main | INFO  | FullSyncDownloader | Starting full sync. 
+2024-02-23 10:02:19.418+00:00 | main | INFO  | FullSyncTargetManager | No sync target, waiting for peers. Current peers: 0 
+2024-02-23 10:02:19.540+00:00 | main | INFO  | Runner | Ethereum main loop is up. 
+2024-02-23 10:02:19.888+00:00 | nioEventLoopGroup-3-6 | INFO  | FullSyncTargetManager | No sync target, waiting for peers. Current peers: 5 
+2024-02-23 10:02:28.401+00:00 | EthScheduler-Services-5 (importBlock) | INFO  | FullImportBlockStep | Import reached block 200 (0x608d112b722399ec43e9189b379d18398f2520d8c555160c44577cb0ab3734b8), - Mg/s, Peers: 5 
+2024-02-23 10:02:28.824+00:00 | EthScheduler-Services-5 (importBlock) | INFO  | FullImportBlockStep | Import reached block 400 (0x19e1629ff059b7f65e6489fc15ab4178a68867f2468fcaa4c4619a51479883dc), - Mg/s, Peers: 5 
+2024-02-23 10:02:29.389+00:00 | EthScheduler-Services-5 (importBlock) | INFO  | FullImportBlockStep | Import reached block 600 (0xf1864687e4d4324fb0a3052a61b6b3e0129d346b3038a294a1d0c3bae5a9f3ce), - Mg/s, Peers: 5 
+```
+Here's shown that the node started to connect to others peers, and started importing blocks.
+When sync ends, the node's logs will change to this state:
+```
+2024-02-24 12:59:20.545+00:00 | EthScheduler-Services-0 (importBlock) | INFO  | FullImportBlockStep | Import reached block 42166800 (0xb1704cadef9438e68a8850fcd90d1d935a8cd28759afd55a37ccdbff5eb96741), 6.665 Mg/s, Peers: 5 
+2024-02-24 12:59:21.219+00:00 | EthScheduler-Services-0 (importBlock) | INFO  | FullImportBlockStep | Import reached block 42167000 (0x06864599b86529b2ccacad00714cbe05c016083ae97b4d294052c1fcdcac9f95), 11.009 Mg/s, Peers: 5 
+2024-02-24 12:59:23.129+00:00 | EthScheduler-Workers-0 | INFO  | PersistBlockTask | Imported #42,167,142 / 1 tx / 0 om / 98,935 (0.9%) gas / (0x957fed46ca8c59acae3d90e14e20896748ddca987585576c1435da28def153ce) in 0.011s. Peers: 5 
+2024-02-24 12:59:26.128+00:00 | EthScheduler-Workers-0 | INFO  | PersistBlockTask | Imported #42,167,143 / 2 tx / 0 om / 197,870 (1.9%) gas / (0xf55ad31703df60adf0331604bd9b269440c4e4eb724fe520ff7fc00d40c59455) in 0.021s. Peers: 5 
+2024-02-24 12:59:29.097+00:00 | EthScheduler-Workers-0 | INFO  | PersistBlockTask | Imported #42,167,144 / 1 tx / 0 om / 98,935 (0.9%) gas / (0xe2df5fd251949de09f416f0c3cbef1988d81275b93ba75b37e1119cfe28df284) in 0.011s. Peers: 5 
+```
+In this state, the node starts to import blocks that are been currently produced, and shows other information about the block like txs, hashes and peers connected.
 
 # Adding automatic checking for updates in node lists
 
