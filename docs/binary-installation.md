@@ -185,7 +185,7 @@ echo 'auto-log-bloom-caching-enabled=false' >> ./config/config.toml
 echo 'max-peers=256' >> ./config/config.toml
 ```
 
-###Script
+* ##### Script
 ```
 sh ./scripts/fetchConfig.sh
 ```
@@ -360,7 +360,7 @@ You need to open the following ports to deploy a node:
 | :---  | :--- | :--               | :---                                         |
 | 30303 | TCP  | 0.0.0.0           | Ethereum client data transfer ports          |
 | 30303 | UDP  | 0.0.0.0           | Ethereum client listener and discovery ports |
-| 9545  | TCP  | ~~185.180.8.152~~ | ~~External Prometheus metrics~~  (*)         |
+| 9545  | TCP  | 18.201.52.140     | Scraping Prometheus metrics from Alastria    |
 
 (*) At the moment, there is no central network monitoring server. While a new system is being provided, we propose adding metric endpoints to your own management infrastructure. 
 
@@ -452,9 +452,7 @@ You can refer to the [smart-contract-deployment](https://github.com/alastria/sma
 ## Links
 
 - [Red B Blockscout Network Explorer](https://b-network.alastria.izer.tech/) - Hosted by [Izertis](https://www.izertis.com/) :raised_hands:
-- Red B Network Monitor (login alastria/alastria) - Hosted by Planisys :raised_hands:
-  - [Regular nodes](https://alastria-netstats.planisys.net:8443/d/htKGWMq7k/alastria-besu-regulars?orgId=1&refresh=5s) 
-  - [Validator nodes](https://alastria-netstats.planisys.net:8443/d/6M-DlWq7z/alastria-besu-validators?orgId=1&refresh=5s)
+- [Red B Network Monitor](https://net-monitor.alastria.io/) (login alastria/alastria) - Hosted by [Alastria](https://alastria.io/) :raised_hands:
 
 ### Operation documents of Alastria nodes
 
