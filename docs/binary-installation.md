@@ -330,6 +330,94 @@ sudo vi /etc/crontab
 ```
 The script will check if there's any difference between local and remote checksums, if so, the target nodes will be replaced.
 
+# Implementation of API Key in Nginx 
+
+An API Key is an unique token used for the authentication to make request to a server. Using that, the Besu node will be more secure for unauthorized access or requests.
+
+The implementation through an reverse proxy with Nginx add an isolation layer to our node from direct users and reducing the node's exposure to potential attacks.
+
+## Steps to deploy
+
+(This is a derivative version of the offical Alastria repo of the [reverse proxy](https://github.com/alastria/reverse-proxy-nginx), in this steps it's explain how configure Nginx in order to use API key in query format (instead of headers), so we can use it in Metamask too for example)
+
+1. First of all, the Besu node must be correctly deployed.
+2. Install Nginx
+```
+sudo apt update
+sudo apt install nginx
+```
+3. Now we have to locate our nginx.conf file (it can be placed in ```/usr/local/nginx/conf```, ```/usr/local/etc/nginx``` or ```/etc/nginx``` ), and modify it or replace with one with this contain.
+```
+user             <YOUR_USER>;
+worker_processes 1;
+pid              /var/run/nginx.pid;
+error_log        /var/log/nginx/error.log;
+
+events {
+  worker_connections  1024;
+}
+
+http {
+  sendfile                  on;
+  tcp_nopush                on;
+  gzip                      on;
+  ssl_prefer_server_ciphers on;
+  keepalive_timeout         65;
+  types_hash_max_size       2048;
+  default_type              application/octet-stream;
+  ssl_protocols             TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
+
+  access_log /var/log/nginx/access.log;
+  include                   /etc/nginx/mime.types;
+
+  server {
+    listen               80      default_server; # IPv4 Listener
+    listen               [::]:80 default_server; # IPv6 Listener
+    server_name          _;                      # Server's name (domain name). By default `_`, which is any.
+    client_max_body_size 1M;                     # Default max body size of 1 Megabyte. If more is needed, increase this number, to eg: 300M
+
+
+    set $api_key_value <YOUR_API_KEY_VALUE>;
+
+    location / {
+      if ($request_method = 'OPTIONS') {
+        add_header Access-Control-Allow-Headers "apikey, Authorization";
+      }
+
+      if ($arg_apikey = "") {
+        return 403; # Forbidden
+      }
+
+      if ($arg_apikey != $api_key_value) {
+      return 401; # Unauthorized
+      }
+      # Change example.com with your node's IP and Port that you would normally use to connect to
+      proxy_pass  <YOUR_NODE_IP:NODE_PORT>;
+  }
+}
+}
+```
+Notes: 
+* By default, Nginx is running at port 80, we can modify this value as we needed.
+* This configuration is set in order to accept query parameters.
+   * If there's no apikey parameter in the request, the response is 403, Forbidden
+   * If there's apikey parameter but does not match with the one in the config, the response is 401, unauthorized
+   * If there's apikey parameter and the value match with the configuration's value, the request pass to the rpc port.
+* The RPC Besu port is 8545, this value can be fixed as we needed.
+
+4. Restart Nginx service in order to take the changes effect.
+```
+sudo systemctl restart nginx.service
+```
+5. Test with a request. (for example)
+```
+curl -v -X POST --data '{"jsonrpc":"2.0","method":"admin_peers","params":[],"id":1}' "http://<YOUR_NGINX_IP:YOUR_NGINX_PORT>?apikey=<YOUR_APIKEY_VALUE>"
+```
+6. (Optional) Test in Metamask.
+  * In Settings -> Networks -> Add Network -> Add network manually, in RPC section we must fill it with the entire url of our Nginx:
+  ```
+  http://<YOUR_NGINX_IP:YOUR_NGINX_PORT>?apikey=<YOUR_APIKEY_VALUE>
+  ```
 
 # Infraestructure details
 
