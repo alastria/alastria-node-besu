@@ -340,13 +340,13 @@ The implementation through an reverse proxy with Nginx add an isolation layer to
 
 (This is a derivative version of the offical Alastria repo of the [reverse proxy](https://github.com/alastria/reverse-proxy-nginx), in this steps it's explain how configure Nginx in order to use API key in query format (instead of headers), so we can use it in Metamask too for example)
 
-1. First of all, the Besu node must be correctly deployed.
-2. Install Nginx
+**1.** First of all, the Besu node must be correctly deployed.
+**2.** Install Nginx
 ```
 sudo apt update
 sudo apt install nginx
 ```
-3. Now we have to locate our nginx.conf file (it can be placed in ```/usr/local/nginx/conf```, ```/usr/local/etc/nginx``` or ```/etc/nginx``` ), and modify it or replace with one with this contain.
+**3.** Now we have to locate our nginx.conf file (it can be placed in ```/usr/local/nginx/conf```, ```/usr/local/etc/nginx``` or ```/etc/nginx``` ), and modify it or replace with one with this contain.
 ```
 user             <YOUR_USER>;
 worker_processes 1;
@@ -405,19 +405,20 @@ Notes:
    * If there's apikey parameter and the value match with the configuration's value, the request pass to the rpc port.
 * The RPC Besu port is 8545, this value can be fixed as we needed.
 
-4. Restart Nginx service in order to take the changes effect.
+**4.** Restart Nginx service in order to take the changes effect.
 ```
 sudo systemctl restart nginx.service
 ```
-5. Test with a request. (for example)
+**5.** Test with a request. (for example)
 ```
 curl -v -X POST --data '{"jsonrpc":"2.0","method":"admin_peers","params":[],"id":1}' "http://<YOUR_NGINX_IP:YOUR_NGINX_PORT>?apikey=<YOUR_APIKEY_VALUE>"
 ```
-6. (Optional) Test in Metamask.
+**6.** (Optional) Test in Metamask.
   * In Settings -> Networks -> Add Network -> Add network manually, in RPC section we must fill it with the entire url of our Nginx:
   ```
   http://<YOUR_NGINX_IP:YOUR_NGINX_PORT>?apikey=<YOUR_APIKEY_VALUE>
   ```
+
 
 # Infraestructure details
 
