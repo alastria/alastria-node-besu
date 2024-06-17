@@ -332,13 +332,13 @@ The script will check if there's any difference between local and remote checksu
 
 # Implementation of API Key in Nginx 
 
-An API Key is an unique token used for the authentication to make request to a server. Using that, the Besu node will be more secure for unauthorized access or requests.
+An API Key is a special token used for the authentication to make requests to a server. Using that, the Besu node will be more secure for unauthorized accesses or requests.
 
-The implementation through an reverse proxy with Nginx add an isolation layer to our node from direct users and reducing the node's exposure to potential attacks.
+The implementation through a reverse proxy using Nginx adds an isolation layer to our node from direct users, reducing the node's exposure to potential attacks.
 
 ## Steps to deploy
 
-(This is a derivative version of the offical Alastria repo of the [reverse proxy](https://github.com/alastria/reverse-proxy-nginx), in this steps it's explain how configure Nginx in order to use API key in query format (instead of headers), so we can use it in Metamask too for example)
+(This is a derivative version of the offical Alastria repo of the [reverse proxy](https://github.com/alastria/reverse-proxy-nginx), in this steps they're explained how configure Nginx in order to use API key in query format (instead of headers), so it can be use in digital wallets, like Metamask for example)
 
 **1.** First of all, the Besu node must be correctly deployed.
 **2.** Install Nginx
@@ -398,12 +398,11 @@ http {
 }
 ```
 Notes: 
-* By default, Nginx is running at port 80, we can modify this value as we needed.
+* By default, Nginx is running at port 80, we can modify this value as we needed. For example, we can fix the Nginx listener port using the RPC port of our Besu node, previously [set in the deployment](#optional-ports), 8545 by default, and use another internal port for our Besu RPC, minimizing the number of externally open ports and increasing the security of our node.
 * This configuration is set in order to accept query parameters.
    * If there's no apikey parameter in the request, the response is 403, Forbidden
    * If there's apikey parameter but does not match with the one in the config, the response is 401, unauthorized
    * If there's apikey parameter and the value match with the configuration's value, the request pass to the rpc port.
-* The RPC Besu port is 8545, this value can be fixed as we needed.
 
 **4.** Restart Nginx service in order to take the changes effect.
 ```
@@ -419,6 +418,7 @@ curl -v -X POST --data '{"jsonrpc":"2.0","method":"admin_peers","params":[],"id"
   http://<YOUR_NGINX_IP:YOUR_NGINX_PORT>?apikey=<YOUR_APIKEY_VALUE>
   ```
 
+More info about Nginx :point_right: [Nginx docs](https://nginx.org/en/docs/)
 
 # Infraestructure details
 
