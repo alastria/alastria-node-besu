@@ -17,6 +17,7 @@ There are 2 main steps to set up an Alatria Node:
 If you are a _rookie_ in Blockchain or Ethereum please consider reading these references:
 
 - https://besu.hyperledger.org/en/stable/
+
 - https://wiki.hyperledger.org/display/BESU/Hyperledger+Besu
 
 If you would like you to know more about [Hyperledger](https://www.hyperledger.org/) Ecosystem, this [link](https://www.hyperledger.org/use/tutorials) is a good start.
@@ -54,6 +55,7 @@ git clone https://github.com/bc-practice/alastria-node-besu.git
 * #### Install Java
 
 For version 22.10.3 (currently in repo), the minimun version is Java 11
+
 ```
 sudo apt install openjdk-11-jre-headless
 ```
@@ -73,15 +75,18 @@ export VERSION_BESU=22.10.3
 ```
 
 Then we have to create versionesBesu folder in order to have a Besu binaries historical registry. And navigate to it.
+
 ```
 mkdir versionesBesu;
 cd versionesBesu
 ```
 
 And execute this command to download the specific binaries and unzip them.
+
 ```
 wget https://hyperledger.jfrog.io/artifactory/besu-binaries/besu/$VERSION_BESU/besu-$VERSION_BESU.tar.gz -O - | tar -xz
 ```
+
 * #### Symbolic links
 
 Now, we have to create symbolic links to bin and lib folders of the binaries folders recently downloaded in order to use them for correct performance.
@@ -90,6 +95,7 @@ Now, we have to create symbolic links to bin and lib folders of the binaries fol
 ln -s /data/alastria-node-besu/versionesBesu/besu-22.10.3/bin bin
 ln -s /data/alastria-node-besu/versionesBesu/besu-22.10.3/lib lib
 ```
+
 * #### Create keys
 
 We need to create the new private key and also the public key and node address. We have to exec these commands.
@@ -102,16 +108,19 @@ We need to create the new private key and also the public key and node address. 
 * #### Config files
 
 First step, we have to create config folder.
+
 ```
 mkdir config
 ```
 
 Now we have to fetch config files from the official repo in order to be synchroniced with the currently configutation. To do so, we have to set environment variable NODE_BRANCH first.(currently "main")
+
 ```
 export NODE_BRANCH=main
 wget -q -O ./config/genesis.json https://raw.githubusercontent.com/alastria/alastria-node-besu-directory/${NODE_BRANCH}/config/genesis.json
 wget -q -O ./config/log-config.xml https://raw.githubusercontent.com/alastria/alastria-node-besu-directory/${NODE_BRANCH}/config/log-config.xml
 ```
+
 Now we have log-config.xml and genesis.json files in our config folder.
 
 We have to fetch config.toml file and other files that help the node connecting to the allowed destinations depending on the kind of node that we are going to use.
@@ -123,24 +132,34 @@ First of all, we have to set NODE_TYPE env variable. (In this case, "regular")
 ```
 NODE_TYPE=regular
 ```
+
 Fetch te github's validator-nodes file.
+
 ```
 wget -q -O ./validator-nodes.json https://raw.githubusercontent.com/alastria/alastria-node-besu-directory/${NODE_BRANCH}/data/validator-nodes.json
 ```
+
 Update allowed-nodes and static-nodes files
+
 ```
 echo "nodes-allowlist=$(cat ./validator-nodes.json)" > ./config/allowed-nodes.toml
 cp ./validator-nodes.json ./config/static-nodes.json
 ```
+
 Copy new validator to config folder
+
 ```
 cp ./validator-nodes.json ./config/validator-nodes.json
 ```
+
 And now, we must get the config.toml file from Alastria's github
+
 ```
 wget -q -O ./config/config.toml https://raw.githubusercontent.com/alastria/alastria-node-besu-directory/${NODE_BRANCH}/config/global-config.toml
 ```
+
 And set specific configutation for Regular node
+
 ```
 echo 'rpc-http-api=["ETH","NET","WEB3","ADMIN"]' >> ./config/config.toml
 echo '' >> ./config/config.toml
@@ -156,28 +175,37 @@ First of all, we have to set NODE_TYPE env variable. (In this case, "validator")
 ```
 NODE_TYPE=validator
 ```
+
 Fetch te github's validator-nodes file. In this case, we have to get both files.
+
 ```
 wget -q -O ./validator-nodes.json https://raw.githubusercontent.com/alastria/alastria-node-besu-directory/${NODE_BRANCH}/data/validator-nodes.json
 wget -q -O ./regular-nodes.json https://raw.githubusercontent.com/alastria/alastria-node-besu-directory/${NODE_BRANCH}/data/regular-nodes.json
 ```
+
 Update allowed-nodes and static-nodes files. (We must have jq installed)
+
 ```
 network_nodes=$(echo "[$(cat ./validator-nodes.json), $(cat ./regular-nodes.json)]" | jq '[.[0][], .[1][]]' | jq --arg ENODE "$(cat ./keys/key.pub | cut -c 3-)" 'del(.[] | select(. | contains($ENODE)))')
 echo "nodes-allowlist=$network_nodes" > ./config/allowed-nodes.toml
 echo $network_nodes > ./config/static-nodes.json
 ```
+
 Copy new validator and regular nodes json to config folder
+
 ```
 cp ./validator-nodes.json ./config/validator-nodes.json
 cp ./regular-nodes.json ./config/regular-nodes.json
 ```
 
 Now, we must get the config.toml file from Alastria's github
+
 ```
 wget -q -O ./config/config.toml https://raw.githubusercontent.com/alastria/alastria-node-besu-directory/${NODE_BRANCH}/config/global-config.toml
 ```
+
 And set specific configuration for validator node.
+
 ```
 echo 'rpc-http-api=["ETH","NET","WEB3","ADMIN","IBFT","PERM"]' >> ./config/config.toml
 echo '' >> ./config/config.toml
@@ -186,6 +214,7 @@ echo 'max-peers=256' >> ./config/config.toml
 ```
 
 * ##### Script
+
 ```
 sh ./scripts/fetchConfig.sh
 ```
@@ -194,6 +223,7 @@ sh ./scripts/fetchConfig.sh
 
 Using binaries, we can create a systemd service in order to handle it with systemctl.
 We have to create besu.service (example name), in /etc/systemd/system/ (the path may change rely on the OS) with this content.
+
 ```
 [Unit]
 Description=Alastria Besu Service
@@ -215,11 +245,14 @@ WantedBy=multi-user.target
 ```
 
 After that, we have to reload the daemon in order to check that there's a new service that have to be started at boot, with these commands:
+
 ```
 sudo systemctl daemon-reload
 sudo systemctl enable besu.service
 ```
+
 Now we can start the service
+
 ```
 sudo systemctl start besu.service
 ```
@@ -228,6 +261,7 @@ And check if it was correctly started.
 ```
 sudo systemctl status besu.service
 ```
+
 The status result might be something like this:
 
 ```
@@ -287,6 +321,7 @@ curl https://ifconfig.me/
 ##### Example
 
 For example, at 26th of February, a regular node spent aprox. 27 hours to complete synchronization.The node's logs will transition from this state:
+
 ```
 2024-02-23 10:02:19.417+00:00 | main | INFO  | FullSyncDownloader | Starting full sync. 
 2024-02-23 10:02:19.418+00:00 | main | INFO  | FullSyncTargetManager | No sync target, waiting for peers. Current peers: 0 
@@ -296,8 +331,10 @@ For example, at 26th of February, a regular node spent aprox. 27 hours to comple
 2024-02-23 10:02:28.824+00:00 | EthScheduler-Services-5 (importBlock) | INFO  | FullImportBlockStep | Import reached block 400 (0x19e1629ff059b7f65e6489fc15ab4178a68867f2468fcaa4c4619a51479883dc), - Mg/s, Peers: 5 
 2024-02-23 10:02:29.389+00:00 | EthScheduler-Services-5 (importBlock) | INFO  | FullImportBlockStep | Import reached block 600 (0xf1864687e4d4324fb0a3052a61b6b3e0129d346b3038a294a1d0c3bae5a9f3ce), - Mg/s, Peers: 5 
 ```
+
 Here's shown that the node started to connect to others peers, and started importing blocks.
 When sync ends, the node's logs will change to this state:
+
 ```
 2024-02-24 12:59:20.545+00:00 | EthScheduler-Services-0 (importBlock) | INFO  | FullImportBlockStep | Import reached block 42166800 (0xb1704cadef9438e68a8850fcd90d1d935a8cd28759afd55a37ccdbff5eb96741), 6.665 Mg/s, Peers: 5 
 2024-02-24 12:59:21.219+00:00 | EthScheduler-Services-0 (importBlock) | INFO  | FullImportBlockStep | Import reached block 42167000 (0x06864599b86529b2ccacad00714cbe05c016083ae97b4d294052c1fcdcac9f95), 11.009 Mg/s, Peers: 5 
@@ -315,38 +352,46 @@ If your installation was done with docker-compose everything is set up in the co
 With binaries, once the Besu node is running, we have to check periodically if there're some nodes that have been replaced, in order to do so, we can execute the updateStaticNodes script. We can execute the command manually or, on the other hand, we can set a task in crontab to be executed every hour (or another time frame).
 
 To do manually, first we have to set env variables NODE_BRANCH and NODE_TYPE:
+
 ```
 export NODE_TYPE=regular
 export NODE_BRANCH=main
 cd scripts
 sh updateStaticNodes.sh
 ```
+
 Through crontab, we have to set the task. Before that we have to set env variables NODE_BRANCH and NODE_TYPE into the script.
+
 ```
 sed -i '7s/.*/NODE_TYPE=regular\n&/; 8s/.*/NODE_BRANCH=main\n&/' /data/alastria-node-besu/scripts/updateStaticNodes.sh
 sudo vi /etc/crontab
 # Add the task
 0 * * * * <user_name> /data/alastria-node-besu/scripts/updateStaticNodes.sh
 ```
+
 The script will check if there's any difference between local and remote checksums, if so, the target nodes will be replaced.
 
 # Implementation of API Key in Nginx 
 
-An API Key is a special token used for the authentication to make requests to a server. Using that, the Besu node will be more secure for unauthorized accesses or requests.
+An API Key is a special token used to enforce some type of authentication while making requests to a remote service. Using that, the Besu node will be more secure for unauthorized accesses or requests.
 
 The implementation through a reverse proxy using Nginx adds an isolation layer to our node from direct users, reducing the node's exposure to potential attacks.
 
 ## Steps to deploy
 
-(This is a derivative version of the offical Alastria repo of the [reverse proxy](https://github.com/alastria/reverse-proxy-nginx), in this steps they're explained how configure Nginx in order to use API key in query format (instead of headers), so it can be use in digital wallets, like Metamask for example)
+> @dev: This is a derivative version of the offical Alastria repo of the [reverse proxy](https://github.com/alastria/reverse-proxy-nginx), in this steps it is explained how configure Nginx in order to use API key in query format (instead of headers), so it can be used in digital wallets, like Metamask for example
 
 **1.** First of all, the Besu node must be correctly deployed.
+
 **2.** Install Nginx
+
 ```
 sudo apt update
 sudo apt install nginx
 ```
+
 **3.** Now we have to locate our nginx.conf file (it can be placed in ```/usr/local/nginx/conf```, ```/usr/local/etc/nginx``` or ```/etc/nginx``` ), and modify it or replace with one with this contain.
+
 ```
 user             <YOUR_USER>;
 worker_processes 1;
@@ -397,23 +442,36 @@ http {
 }
 }
 ```
-Notes: 
-* By default, Nginx is running at port 80, we can modify this value as we needed. For example, we can fix the Nginx listener port using the RPC port of our Besu node, previously [set in the deployment](#optional-ports), 8545 by default, and use another internal port for our Besu RPC, minimizing the number of externally open ports and increasing the security of our node.
+
+Notes:
+
+* By default, Nginx is running at port 80, we can modify this value as we needed. For example, we can configure the Nginx listener port using the RPC port of our Besu node, previously [set up in the deployment](#optional-ports).
+By default, 8545 is the configured port for our Besu RPC , we can use a different port for the Besu RPC, and configure a redirection in Nginx from the default 8545 port, to a our customized port, minimizing the number of externally open ports and increasing the security of our node.
+
 * This configuration is set in order to accept query parameters.
-   * If there's no apikey parameter in the request, the response is 403, Forbidden
-   * If there's apikey parameter but does not match with the one in the config, the response is 401, unauthorized
-   * If there's apikey parameter and the value match with the configuration's value, the request pass to the rpc port.
+
+   * If there is no apikey parameter in the request, the response is 403, Forbidden
+
+   * If there is an apikey parameter but does not match with the one in the config, the response is 401, unauthorized
+
+   * If there is an apikey parameter and the value match with the configuration's value, the request passes to the rpc port.
 
 **4.** Restart Nginx service in order to take the changes effect.
+
 ```
 sudo systemctl restart nginx.service
 ```
+
 **5.** Test with a request. (for example)
+
 ```
 curl -v -X POST --data '{"jsonrpc":"2.0","method":"admin_peers","params":[],"id":1}' "http://<YOUR_NGINX_IP:YOUR_NGINX_PORT>?apikey=<YOUR_APIKEY_VALUE>"
 ```
+
 **6.** (Optional) Test in Metamask.
+
   * In Settings -> Networks -> Add Network -> Add network manually, in RPC section we must fill it with the entire url of our Nginx:
+
   ```
   http://<YOUR_NGINX_IP:YOUR_NGINX_PORT>?apikey=<YOUR_APIKEY_VALUE>
   ```
@@ -468,10 +526,10 @@ Notes:
 Notes:
 
 - :warning: Please, be very carefull opening web3 ports: this protocol does not have enabled (natively) neither authentication nor encryption!
+
 - :warning: Opening web3 ports, can be tuned in `/data/alastria-node-besu/config/config.toml` file: listening interface, `web3` methods available,...
+
 - Ninja sysadmins don't use outbound firewall rules :joy:
-
-
 
 ## Help! :fire_extinguisher:
 
@@ -480,7 +538,9 @@ Notes:
 [Alastria](https://alastria.io/en/) has a group of channels available on `Slack` message platform, url: `alastria.slack.com`. You need to be invited, for it, please send a email to support@alastria.io asking to join the channel. Provide the following information:
 
 - Name and organization.
+
 - e-mail address to be added.
+
 - Channel list where to be joined.
 
 ### Available channels by default
@@ -488,6 +548,7 @@ Notes:
 Once accepted in the Alastria Slack group you are automatically included in:
 
 - `#general` General purpose channel (public)
+
 - `#notificaciones` Notifications Github channel (public)
 
 You can add yourself to the following channels:
@@ -541,6 +602,7 @@ You can refer to the [smart-contract-deployment](https://github.com/alastria/sma
 ## Links
 
 - [Red B Blockscout Network Explorer](https://b-network.alastria.izer.tech/) - Hosted by [Izertis](https://www.izertis.com/) :raised_hands:
+
 - [Red B Network Monitor](https://net-monitor.alastria.io/) (login alastria/alastria) - Hosted by [Alastria](https://alastria.io/) :raised_hands:
 
 ### Operation documents of Alastria nodes
