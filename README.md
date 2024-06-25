@@ -111,6 +111,12 @@ However, if your installation was done prior to June 2022, ensure you have the m
 * Edit the `docker-compose.yml` and the `.env` files if you need a custom configuration in `volumes` and `ports` sections, and to set the type and the name of your node
 * Start the container forcing the image to be build again with `docker-compose up --build -d`
 
+# Secure your Besu node using API Key
+
+We can add an additional security layer to our Besu node using API Key implementation in order to identify or authenticate an user for using the service.
+
+Please, navigate to the section to set up the node. :point_right: [API Key](./docs/binary-installation.md#implementation-of-api-key-in-nginx)
+
 # Infraestructure details
 
 ## System requirements
