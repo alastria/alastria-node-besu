@@ -371,7 +371,7 @@ sudo vi /etc/crontab
 
 The script will check if there's any difference between local and remote checksums, if so, the target nodes will be replaced.
 
-# Implementation of API Key in Nginx 
+# Implementation of API Key in Nginx
 
 An API Key is a special token used to enforce some type of authentication while making requests to a remote service. Using that, the Besu node will be more secure for unauthorized accesses or requests.
 
