@@ -9,7 +9,7 @@ Alastria red B Network is a public-permissioned Blockchain network that uses the
 
 There are 2 main steps to set up an Alatria Node:
 
-**1. Installation & configuration:** Follow the Docker installation steps and your node will be ready.
+**1. Installation & configuration:** Follow the binary installation steps and your node will be ready.
 
 **2. Getting permissioned:** In order to use Alastria Network, your node must be previously accepted. 
 
@@ -558,10 +558,10 @@ You can add yourself to the following channels:
 
 ## FAQ
 
-- How how can I see the logs of the container?  
+- How how can I see the logs of the Besu service?  
 
 ```sh
-docker logs -f NODE_NAME
+sudo systemctl status besu.service
 ```
 
 - How to know if the node is already permissioned?
