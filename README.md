@@ -11,8 +11,8 @@ There are 2 main steps to set up an Alatria Node:
 
 **1. Installation & configuration:** There are two different ways to install the Alastria Besu node.
 
-* **Docker** Follow the installation steps in this document and your node will be ready.
-* **Binary**: Please navigate to the [Binaries doc](docs/binary-installation.md)
+* **Docker:** Follow the installation steps in this document and your node will be ready.
+* **Binary:** Please navigate to the [Binaries doc](docs/binary-installation.md)
 
 **2. Getting permissioned:** In order to use Alastria Network, your node must be previously accepted. 
 
