@@ -128,15 +128,18 @@ Please, navigate to the section to set up the node. :point_right: [API Key](./do
 
 - Hosting: Euro Zone; in order to complain with GDPR directives.
 
-- Hardware:
-Regular nodes
+Hardware:
+
+- Regular nodes
+
 | Hardware       | Minimum | Desired |
 | :------------- | :------ | :------ |
 | **CPU's**:     | 2       | 4       |
 | **Memory**:    | 4 Gb    | 8 Gb    |
 |**Disk (SSD)**: | 512 Gb   | 750 Gb  |
 
-Validator nodes
+- Validator nodes
+
 | Hardware       | Minimum | Desired |
 | :------------- | :------ | :------ |
 | **CPU's**:     | 4       | 8       |
