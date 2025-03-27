@@ -129,14 +129,30 @@ Please, navigate to the section to set up the node. :point_right: [API Key](./do
 - Hosting: Euro Zone; in order to complain with GDPR directives.
 
 - Hardware:
-
+Regular nodes
 | Hardware       | Minimum | Desired |
 | :------------- | :------ | :------ |
 | **CPU's**:     | 2       | 4       |
 | **Memory**:    | 4 Gb    | 8 Gb    |
-|**Hard Disk (SSD)**: | 256 Gb   | 512 Gb  |
+|**Disk (SSD)**: | 512 Gb   | 750 Gb  |
 
-Blockchain database is about 16Gb at mid-2021 and grows at rate of 2Gb/month. Take this into consideration when provisioning space for cache, logs etc.
+Validator nodes
+| Hardware       | Minimum | Desired |
+| :------------- | :------ | :------ |
+| **CPU's**:     | 4       | 8       |
+| **Memory**:    | 8 Gb    | 16 Gb    |
+|**Disk (SSD mandatory)**: | 750 Gb   | 3 Tb  |
+
+Besu requires an installation of Java 21+ to run. We currently recommend two Java distributions, OpenJDK 21 and OpenJ9, though you can experiment based on your needs.
+
+OpenJDK is the default for many Java users and is balanced in performance and garbage collection. OpenJ9 consumes less memory and system resources, but can have worse performance on some setups.
+
+If you have more than 32GB RAM (for Besu and your consensus client), use OpenJDK. If you have less RAM:
+
+- If you're on Linux (or Unix-based) and your CPU is x86-64 bit architecture (like Intel), use OpenJ9.
+- If you're on ARM-64 CPU architecture (Mac M-series, Raspberry Pi), use OpenJDK.
+
+Blockchain database is about 450Gb at 2025 and grows at rate of 2Gb/month. Take this into consideration when provisioning space for cache, logs etc.
 [SSD Disk is mandatory](https://besu.hyperledger.org/public-networks/get-started/system-requirements#disk-type)
 
 ## Firewall configuration
