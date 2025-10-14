@@ -178,9 +178,8 @@ Notes:
 
 | Port | Type | From            | Definition                                        |
 | :--- | :--- | :---            | :------------------------------------------------ |
-| 8080 | TCP  | (orion parners) | :warning: **DEPRECATED** Orion port (in case you use private transactions) |
-| 8545 | TCP  | (web3 client)   | json+rpc (in case you use remix/truffle/.../web3) |
-| 8546 | TCP  | (web3 client)   | json+ws (in case you use remix/truffle/.../web3)  |
+| 8545 | TCP  | (web3 client)   | json+rpc (in case you use Remix/Hardhat/.../web3) |
+| 8546 | TCP  | (web3 client)   | json+ws (in case you use Remix/Hardhat/.../web3)  |
 
 Notes:
 
